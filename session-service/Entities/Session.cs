@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace session_service.Entities
 {
-    [Table("session")]
     public  class Session
     {
         
@@ -14,6 +13,7 @@ namespace session_service.Entities
         {
             this.chatId = chatId;
             this.moderatorId = moderatorId;
+            observerstConferencingTokens = new List<string>();
         }
 
         public int id { set; get; }
@@ -26,10 +26,9 @@ namespace session_service.Entities
         
         //videoConferencing service
         public string videoConferencingSessionId { get; set; }
-        public string videoConferencingServerUrl { get; set; }
-        public string moderatorConferencingToken { get; set; }
-        public string participantConferencingToken { get; set; }
-        public List<string> observerstConferencingTokens { get; set; }
+        public string moderatorConferenceToken { get; set; }
+        public string participantConferenceToken { get; set; }
+        public IList<string> observerstConferencingTokens { get; set; }
         
     }
 }

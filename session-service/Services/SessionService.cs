@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using session_service.Contracts;
+using session_service.Contracts.Proxies;
 using session_service.Contracts.Repositories;
 using session_service.Contracts.Services;
 using session_service.Entities;
@@ -10,6 +11,7 @@ namespace session_service.Services
     {
         private ISessionRepository sessionRepository;
         private IChatRepository chatRepository;
+        private IVideoConferencingServiceProxy conferencingServiceProxy;
         
         public async Task<Session> createSession(int moderatorId)
         {
@@ -17,9 +19,12 @@ namespace session_service.Services
             Chat chat=await chatRepository.Create(new Chat());
             Session session = new Session(moderatorId, chat.id);
             
-            
-            
             //create videoconference
+            session.videoConferencingSessionId=await conferencingServiceProxy.createSession();
+            session.moderatorConferenceToken =
+                await conferencingServiceProxy.joinAsModerator(session.videoConferencingSessionId);
+            session.participantConferenceToken =
+                await conferencingServiceProxy.joinAsParticipant(session.videoConferencingSessionId);
             
             //create screensharing
             
@@ -32,7 +37,6 @@ namespace session_service.Services
             
             return session;
             
-            throw new System.NotImplementedException();
         }
         
 
