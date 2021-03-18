@@ -1,11 +1,14 @@
+using System.Threading.Tasks;
 using session_service.Entities;
 
-namespace session_service.Contracts
+namespace session_service.Contracts.Services
 {
     public interface ISessionService
     {
 
-        public Session createSession(Moderator moderator);
+        public Task<Session> createSession(int moderatorId);
+
+        public Task<Session> getSession(int sessionId);
 
         public void startSession(Session session);
         

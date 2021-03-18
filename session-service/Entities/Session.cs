@@ -1,13 +1,24 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace session_service.Entities
 {
-    public class Session
+    [Table("session")]
+    public  class Session
     {
         
         // session service 
+
+
+        public Session(int chatId, int moderatorId)
+        {
+            this.chatId = chatId;
+            this.moderatorId = moderatorId;
+        }
+
         public int id { set; get; }
-        public Chat chat { get; set; }
+        public int chatId { get; set; }
+        public int moderatorId { set; get; }
         
         //screensharing service
         public string screenSharingSessionId { get; set; }

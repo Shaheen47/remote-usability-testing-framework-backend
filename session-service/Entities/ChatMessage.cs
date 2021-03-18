@@ -4,8 +4,14 @@ namespace session_service.Entities
 {
     public class ChatMessage
     {
-        
-        public User sender { get; set; }
+        public ChatMessage(string sender, string message, DateTime timestamp)
+        {
+            this.sender = sender;
+            this.message = message;
+            this.timestamp = timestamp;
+        }
+
+        public string sender { get; set; }
         
         public string message { get; set; }
         
