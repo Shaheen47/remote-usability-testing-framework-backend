@@ -95,7 +95,7 @@ namespace videoconferencing_service.Proxies.OpenVidu
             var response = await client.PostAsync(api, content);
             var responeContent = await response.Content.ReadAsStringAsync();
             Recording recording=JsonConvert.DeserializeObject<Recording>(responeContent);
-            theRecording = recording;
+            this.theRecording = recording;
             return recording;
         }
         
