@@ -10,16 +10,15 @@ namespace videoconferencing_service.Services
         
         private readonly IConfiguration Configuration;
         
-        // OpenVidu object as entrypoint of the SDK
-        private OpenViduProxy openVidu;
+        private IConferenceProviderProxy conferenceProviderProxy;
         private string openViduUrl;
         private string openViduSecret;
         
 
-        public RecordingService(IConfiguration configuration)
+        public RecordingService(IConfiguration configuration,IConferenceProviderProxy conferenceProviderProxy)
         {
             Configuration = configuration;
-            openVidu = new OpenViduProxy(configuration);
+            this.conferenceProviderProxy = conferenceProviderProxy;
             openViduUrl = configuration["OpenVidu:OPENVIDU_URL"];
             openViduSecret = configuration["OpenVidu:SECRET"];
 
@@ -28,13 +27,13 @@ namespace videoconferencing_service.Services
         
         public async Task startRecording(string sessionId)
         {
-            Session session=await openVidu.getSession(sessionId);
+            Session session=conferenceProviderProxy.getSession(sessionId);
             await session.startRecording(openViduUrl, openViduSecret);
         }
 
         public async Task<string> stopRecording(string sessionId)
         {
-            Session session=await openVidu.getSession(sessionId);
+            Session session=conferenceProviderProxy.getSession(sessionId);
             Recording recording =await session.stopRecording(openViduUrl, openViduSecret);
             return recording.url;
         }
