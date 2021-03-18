@@ -10,7 +10,12 @@ namespace session_service.Services
     public class ChatService : IChatService
     {
         private IChatRepository chatRepository;
-        
+
+        public ChatService(IChatRepository chatRepository)
+        {
+            this.chatRepository = chatRepository;
+        }
+
         public async Task addMessage(int chatId, ChatMessage message)
         {
             Chat chat= await chatRepository.FindById(chatId);

@@ -10,7 +10,12 @@ namespace session_service.Controllers
     public class SessionController: ControllerBase
     {
         private ISessionService sessionService;
-     
+
+        public SessionController(ISessionService sessionService)
+        {
+            this.sessionService = sessionService;
+        }
+
         [HttpPost]
         [Route("create-session")]
         public async Task<IActionResult> createSession()

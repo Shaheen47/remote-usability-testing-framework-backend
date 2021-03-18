@@ -12,7 +12,14 @@ namespace session_service.Services
         private ISessionRepository sessionRepository;
         private IChatRepository chatRepository;
         private IVideoConferencingServiceProxy conferencingServiceProxy;
-        
+
+        public SessionService(ISessionRepository sessionRepository, IChatRepository chatRepository, IVideoConferencingServiceProxy conferencingServiceProxy)
+        {
+            this.sessionRepository = sessionRepository;
+            this.chatRepository = chatRepository;
+            this.conferencingServiceProxy = conferencingServiceProxy;
+        }
+
         public async Task<Session> createSession()
         {
             //create session and chat

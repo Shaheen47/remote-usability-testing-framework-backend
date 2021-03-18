@@ -22,7 +22,7 @@ namespace session_service.Proxies
             var response = await client.PostAsync( api, content);
             var responeContent = await response.Content.ReadAsStringAsync();
             ConferenceSession session=JsonConvert.DeserializeObject<ConferenceSession>(responeContent);
-            return session.sessionId;
+            return session.sessionName;
         }
 
         public async Task<string> joinAsModerator(string sessionId)
@@ -30,9 +30,9 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            String api ="https://localhost:5003/Session/join-as-moderator";
+            String api ="https://localhost:5003/Session/join-session-moderator";
             ConferenceSession conferenceSession = new ConferenceSession();
-            conferenceSession.sessionId = sessionId;
+            conferenceSession.sessionName = sessionId;
             StringContent content =
                 new StringContent((JsonSerializer.Serialize(conferenceSession)), Encoding.UTF8, "application/json");
             var response = await client.PostAsync( api, content);
@@ -46,9 +46,9 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            String api ="https://localhost:5003/Session/join-as-participant";
+            String api ="https://localhost:5003/Session/join-session-participant";
             ConferenceSession conferenceSession = new ConferenceSession();
-            conferenceSession.sessionId = sessionId;
+            conferenceSession.sessionName = sessionId;
             StringContent content =
                 new StringContent((JsonSerializer.Serialize(conferenceSession)), Encoding.UTF8, "application/json");
             var response = await client.PostAsync( api, content);
@@ -62,9 +62,9 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            String api ="https://localhost:5003/Session/join-as-observer";
+            String api ="https://localhost:5003/Session/join-session-observer";
             ConferenceSession conferenceSession = new ConferenceSession();
-            conferenceSession.sessionId = sessionId;
+            conferenceSession.sessionName = sessionId;
             StringContent content =
                 new StringContent((JsonSerializer.Serialize(conferenceSession)), Encoding.UTF8, "application/json");
             var response = await client.PostAsync( api, content);
