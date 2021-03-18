@@ -6,7 +6,7 @@ namespace session_service.Contracts.Services
     public interface ISessionService
     {
 
-        public Task<Session> createSession(int moderatorId);
+        public Task<Session> createSession();
 
         public Task<Session> getSession(int sessionId);
 

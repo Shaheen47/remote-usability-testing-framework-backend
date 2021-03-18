@@ -10,7 +10,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using session_service.Contracts.Repositories;
+using session_service.Contracts.Services;
 using session_service.Hubs;
+using session_service.Repositories;
+using session_service.Services;
 
 namespace session_service
 {
@@ -36,6 +40,13 @@ namespace session_service
                 }));
             services.AddControllers();
             services.AddSignalR();
+            
+            services.AddSingleton<ISessionService, SessionService>();
+            services.AddSingleton<IChatService, ChatService>();
+            services.AddSingleton<IUserService, UserService>();
+            
+            services.AddSingleton<ISessionRepository, DumbSessionRepo>();
+            services.AddSingleton<IChatRepository, DumbChatRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

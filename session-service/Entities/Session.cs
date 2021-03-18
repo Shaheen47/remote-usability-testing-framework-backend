@@ -9,17 +9,15 @@ namespace session_service.Entities
         // session service 
 
 
-        public Session(int chatId, int moderatorId)
+        public Session(int chatId)
         {
             this.chatId = chatId;
-            this.moderatorId = moderatorId;
             observerstConferencingTokens = new List<string>();
         }
 
         public int id { set; get; }
         public int chatId { get; set; }
-        public int moderatorId { set; get; }
-        
+
         //screensharing service
         public string screenSharingSessionId { get; set; }
         public string screenSharingHubUrl { get; set; }

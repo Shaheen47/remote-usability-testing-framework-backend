@@ -13,11 +13,11 @@ namespace session_service.Services
         private IChatRepository chatRepository;
         private IVideoConferencingServiceProxy conferencingServiceProxy;
         
-        public async Task<Session> createSession(int moderatorId)
+        public async Task<Session> createSession()
         {
             //create session and chat
             Chat chat=await chatRepository.Create(new Chat());
-            Session session = new Session(moderatorId, chat.id);
+            Session session = new Session( chat.id);
             
             //create videoconference
             session.videoConferencingSessionId=await conferencingServiceProxy.createSession();
@@ -25,7 +25,6 @@ namespace session_service.Services
                 await conferencingServiceProxy.joinAsModerator(session.videoConferencingSessionId);
             session.participantConferenceToken =
                 await conferencingServiceProxy.joinAsParticipant(session.videoConferencingSessionId);
-            
             //create screensharing
             
             
