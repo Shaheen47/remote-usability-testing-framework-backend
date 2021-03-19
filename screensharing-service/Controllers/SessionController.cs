@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using screensharing_service.Contracts.Services;
+using screensharing_service.Entities;
 
 namespace screensharing_service.Controllers
 {
@@ -10,13 +11,18 @@ namespace screensharing_service.Controllers
     public class SessionController: ControllerBase
     {
         private ISessionService sessionService;
-        
+
+        public SessionController(ISessionService sessionService)
+        {
+            this.sessionService = sessionService;
+        }
+
         [HttpPost]
         [Route("create-session")]
         public async Task<IActionResult> createSession()
         {
-            string session=await sessionService.generateScreenSharingHub();
-            return Created("sessionName",session);
+            Session session=await sessionService.createSession();
+            return Created("session",session);
         }
     }
 }

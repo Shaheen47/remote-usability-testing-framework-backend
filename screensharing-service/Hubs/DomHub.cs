@@ -6,14 +6,14 @@ namespace screensharing_service.Hubs
     public class DomHub : Hub
     {
         
-        public async Task addToSession(string sessionId)
+        public async Task joinSession(string sessionId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
             //
             await Clients.Group(sessionId).SendAsync("Send", $"{Context.ConnectionId} has joined the group {sessionId}.");
         }
         
-        public async Task removeFromSession(string sessionId)
+        public async Task leaveSession(string sessionId)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, sessionId);
 
@@ -22,8 +22,7 @@ namespace screensharing_service.Hubs
 
         public async Task sendDom(string user,string sessionId,string dom)
         {
-            var i = 11;
-            //
+            
             await Clients.Group(sessionId).SendAsync("sentDom",user, dom);
         }
         
