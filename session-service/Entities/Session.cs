@@ -9,16 +9,16 @@ namespace session_service.Entities
         // session service 
 
 
-        public Session(string chatId)
+        public Session(string chatSessionId)
         {
-            this.chatId = chatId;
+            this.chatSessionId = chatSessionId;
             observerstConferencingTokens = new List<string>();
         }
 
         
         public string id { set; get; }
         //chat
-        public string chatId { get; set; }
+        public string chatSessionId { get; set; }
         public string chatHubUrl { get; set; }
 
         
