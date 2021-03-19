@@ -25,7 +25,7 @@ namespace session_service.Services
             this.Mapper = Mapper;
         }
 
-        public async Task<Session> createSession()
+        public async Task<SessionCreationDto> createSession()
         {
             
             Session session = new Session();
@@ -49,7 +49,8 @@ namespace session_service.Services
             await chatRepository.Save();
             
             //return 
-            return session;
+            var sessionCreationDto=Mapper.Map<Session, SessionCreationDto>(session);
+            return sessionCreationDto;
             
         }
         

@@ -20,8 +20,8 @@ namespace session_service.Controllers
         [Route("create-session")]
         public async Task<IActionResult> createSession()
         {
-            Session sessionModeratorDto=await sessionService.createSession();
-            return Created("session",sessionModeratorDto);
+            SessionCreationDto sessionCreationDto=await sessionService.createSession();
+            return Created("session",sessionCreationDto);
         }
         
         
