@@ -25,6 +25,11 @@ namespace session_service.Proxies
             return session.sessionName;
         }
 
+        public Task stopSession(string sessionId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<string> joinAsModerator(string sessionId)
         {
             HttpClientHandler clientHandler = new HttpClientHandler();

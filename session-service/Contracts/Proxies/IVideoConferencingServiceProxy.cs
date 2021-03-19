@@ -5,6 +5,8 @@ namespace session_service.Contracts.Proxies
     public interface IVideoConferencingServiceProxy
     {
         public Task<string> createSession();
+        
+        public Task stopSession(string sessionId);
 
         public Task<string> joinAsModerator(string sessionId);
         

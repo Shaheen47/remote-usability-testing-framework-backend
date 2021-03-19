@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,6 +12,7 @@ using session_service.Hubs;
 using session_service.Proxies;
 using session_service.Repositories;
 using session_service.Services;
+using session_service.Mappings;
 
 namespace session_service
 {
@@ -42,6 +38,8 @@ namespace session_service
                 }));
             services.AddControllers();
             services.AddSignalR();
+            
+            services.AddAutoMapper(typeof(Maps));
             
             services.AddSingleton<ISessionRepository, DumbSessionRepo>();
             services.AddSingleton<IChatRepository, DumbChatRepo>();

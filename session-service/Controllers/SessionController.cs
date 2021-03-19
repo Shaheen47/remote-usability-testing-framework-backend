@@ -20,9 +20,36 @@ namespace session_service.Controllers
         [Route("create-session")]
         public async Task<IActionResult> createSession()
         {
-            Session session=await sessionService.createSession();
-            return Created("sessionName",session);
+            Session sessionModeratorDto=await sessionService.createSession();
+            return Created("session",sessionModeratorDto);
         }
+        
+        
+        [HttpPost]
+        [Route("join-as-moderator")]
+        public async Task<IActionResult> joinAsModerator([FromBody] SessionLoginDto loginDto)
+        {
+            SessionModeratorDto sessionModeratorDto=await sessionService.joinAsModerator(loginDto.sessionId,"moderator");
+            return Created("moderator",sessionModeratorDto);
+        }
+        
+        [HttpPost]
+        [Route("join-as-participant")]
+        public async Task<IActionResult> getParticipantInformation([FromBody] SessionLoginDto loginDto)
+        {
+            SessionParticipantDto sessionParticipantDto=await sessionService.joinAsParticipant(loginDto.sessionId,"participant");
+            return Created("participant",sessionParticipantDto);
+        }
+        
+        [HttpPost]
+        [Route("join-as-observer")]
+        public async Task<IActionResult> joinAsObserver([FromBody] SessionLoginDto loginDto)
+        {
+            SessionObserverDto sessionObserverDto=await sessionService.joinAsObserver(loginDto.sessionId,"observer");
+            return Created("observer",sessionObserverDto);
+        }
+        
+        
         
     }
 }

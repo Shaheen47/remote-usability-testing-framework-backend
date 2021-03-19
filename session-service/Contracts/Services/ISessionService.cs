@@ -7,10 +7,15 @@ namespace session_service.Contracts.Services
     {
 
         public Task<Session> createSession();
+        
+        public Task<SessionModeratorDto> joinAsModerator(string sessionId,string moderatorName);
 
+        public Task<SessionParticipantDto> joinAsParticipant(string sessionId,string participantName);
+
+        public Task<SessionObserverDto> joinAsObserver(string sessionId,string observerName);
+        
         public Task<Session> getSession(string sessionId);
-
-        public void startSession(Session session);
+        
         
         public void stopSession(Session session);
         

@@ -1,26 +1,13 @@
-using System.Collections.Generic;
-
-
-namespace session_service.Entities
+namespace session_service
 {
-    public  class Session
+    public class SessionModeratorDto
     {
-        
-        // session service 
-
-
-        public Session()
-        {
-            observersConferencingTokens = new List<string>();
-        }
-
-        
         public string id { set; get; }
-        //chat
+        
+        //chat service
         public string chatSessionId { get; set; }
         public string chatHubUrl { get; set; }
 
-        
         //screensharing service
         public string screenSharingSessionId { get; set; }
         public string screenSharingHubUrl { get; set; }
@@ -29,8 +16,5 @@ namespace session_service.Entities
         //videoConferencing service
         public string videoConferencingSessionId { get; set; }
         public string moderatorConferenceToken { get; set; }
-        public string participantConferenceToken { get; set; }
-        public IList<string> observersConferencingTokens { get; set; }
-        
     }
 }
