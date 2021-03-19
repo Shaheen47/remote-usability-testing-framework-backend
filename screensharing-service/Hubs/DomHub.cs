@@ -24,28 +24,28 @@ namespace screensharing_service.Hubs
         {
             var i = 11;
             //
-            await Clients.All.SendAsync("sentDom",user, dom);
+            await Clients.Group(sessionId).SendAsync("sentDom",user, dom);
         }
         
         
         public async Task sendMousePosition(string user,string sessionId,int x,int y)
         {
-            await Clients.All.SendAsync("sentMousePosition",user, x,y);
+            await Clients.Group(sessionId).SendAsync("sentMousePosition",user, x,y);
         }
 
         public async Task sendScrollDown(string user,string sessionId)
         {
-            await Clients.All.SendAsync("sentScrollDown",user);
+            await Clients.Group(sessionId).SendAsync("sentScrollDown",user);
         }
         
         public async Task sendScrollUp(string user,string sessionId)
         {
-            await Clients.All.SendAsync("sentScrollUp",user);
+            await Clients.Group(sessionId).SendAsync("sentScrollUp",user);
         }
 
         public async Task sendScroll(string user,string sessionId,int vertical)
         {
-            await Clients.All.SendAsync("sentScroll",user,vertical);
+            await Clients.Group(sessionId).SendAsync("sentScroll",user,vertical);
         }
         
     }
