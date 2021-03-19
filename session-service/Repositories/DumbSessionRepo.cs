@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using session_service.Contracts.Repositories;
+using session_service.Core;
 using session_service.Entities;
 
 namespace session_service.Repositories
@@ -23,7 +24,7 @@ namespace session_service.Repositories
             return sessions;
         }
 
-        public async Task<Session> FindById(int id)
+        public async Task<Session> FindById(string id)
         {
             foreach (var session in sessions)
             {
@@ -36,8 +37,7 @@ namespace session_service.Repositories
         public async Task<Session> Create(Session entity)
         {
             Session session = entity;
-            var random = new Random();
-            session.id=random.Next();
+            session.id=RandomKeyGenerator.GetUniqueKey(10);
             sessions.Add(entity);
             return session;
         }

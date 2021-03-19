@@ -8,7 +8,7 @@ namespace session_service.Contracts.Services
 
         public Task<Session> createSession();
 
-        public Task<Session> getSession(int sessionId);
+        public Task<Session> getSession(string sessionId);
 
         public void startSession(Session session);
         

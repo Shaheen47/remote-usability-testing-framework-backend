@@ -8,15 +8,28 @@ namespace session_service.Hubs
 {
     public class ChatHub : Hub
     {
-        public ISessionService sessionService;
         private IChatService chatService;
-        public async Task sendMessage(int sessionId,string senderName, string message)
+        
+        public async Task joinSession(string chatSessionId)
         {
-            await Clients.All.SendAsync("chatMessageSent", senderName, message);
+            await Groups.AddToGroupAsync(Context.ConnectionId, chatSessionId);
+            //
+            await Clients.Group(chatSessionId).SendAsync("Send", $"{Context.ConnectionId} has joined the group {chatSessionId}.");
+        }
+        
+        public async Task leaveSession(string chatSessionId)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatSessionId);
 
-            Session session=await sessionService.getSession(sessionId);
+            await Clients.Group(chatSessionId).SendAsync("Send", $"{Context.ConnectionId} has left the group {chatSessionId}.");
+        }
+        
+        public async Task sendMessage(string chatSessionId,string senderName, string message)
+        {
+            await Clients.Group(chatSessionId).SendAsync("chatMessageSent", senderName, message);
+            
             ChatMessage chatMessage = new ChatMessage(senderName,message,DateTime.Now);
-            await chatService.addMessage(session.chatId,chatMessage);
+            await chatService.addMessage(chatSessionId,chatMessage);
         }
     }
 }

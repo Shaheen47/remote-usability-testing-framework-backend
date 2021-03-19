@@ -7,8 +7,8 @@ namespace session_service.Contracts.Services
     public interface IChatService
     {
 
-        public Task addMessage(int chatId, ChatMessage message);
+        public Task addMessage(string chatId, ChatMessage message);
 
-        public Task<List<ChatMessage>> GetChatMessages(int chatId);
+        public Task<List<ChatMessage>> GetChatMessages(string chatId);
     }
 }

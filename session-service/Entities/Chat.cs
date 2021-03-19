@@ -4,7 +4,7 @@ namespace session_service.Entities
 {
     public class Chat
     {
-        public int id { get; set; }
+        public string id { get; set; }
         public List<ChatMessage> messages { get; set; }
         
     }

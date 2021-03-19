@@ -7,7 +7,7 @@ namespace session_service.Contracts.Repositories
         {
             Task<IList<T>> FindAll();
 
-            Task<T> FindById(int id);
+            Task<T> FindById(string id);
 
             Task<T> Create(T entity);
         

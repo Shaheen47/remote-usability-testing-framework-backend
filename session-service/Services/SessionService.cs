@@ -46,7 +46,7 @@ namespace session_service.Services
         }
         
 
-        public async Task<Session> getSession(int sessionId)
+        public async Task<Session> getSession(string sessionId)
         {
             Session session=await sessionRepository.FindById(sessionId);
             return session;
