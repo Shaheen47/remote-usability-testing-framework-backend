@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using AutoMapper;
-using session_service.Contracts;
 using session_service.Contracts.Proxies;
 using session_service.Contracts.Repositories;
 using session_service.Contracts.Services;
@@ -34,6 +33,7 @@ namespace session_service.Services
             //create chat session
             Chat chat=await chatRepository.Create(new Chat());
             session.chatSessionId = chat.id;
+            session.chatHubUrl = "https://localhost:5001/Session/ChatHub";
             
             //create videoconference session by communicating with the VideoConferencingService
             session.videoConferencingSessionId=await conferencingServiceProxy.createSession();
@@ -49,7 +49,6 @@ namespace session_service.Services
             await chatRepository.Save();
             
             //return 
-            var sessionModeratorDto=Mapper.Map<Session, SessionModeratorDto>(session);
             return session;
             
         }
@@ -74,7 +73,7 @@ namespace session_service.Services
             Session session=await sessionRepository.FindById(sessionId);
             
             //call conferencingServiceProxy to create conference connection for the moderator
-            session.videoConferencingSessionId=await conferencingServiceProxy.joinAsModerator(sessionId);
+            session.moderatorConferenceToken=await conferencingServiceProxy.joinAsModerator(session.videoConferencingSessionId);
             
             //save
             await sessionRepository.Update(session);
@@ -104,7 +103,7 @@ namespace session_service.Services
             
             Session session=await sessionRepository.FindById(sessionId);
             //call conferencingServiceProxy to create conference connection for the observer
-            var token=await conferencingServiceProxy.joinAsObserver(sessionId);
+            var token=await conferencingServiceProxy.joinAsObserver(session.videoConferencingSessionId);
             
             session.observersConferencingTokens.Add(token);
             
