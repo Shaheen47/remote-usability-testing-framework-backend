@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace session_service.Entities
 {
@@ -15,12 +15,17 @@ namespace session_service.Entities
             observerstConferencingTokens = new List<string>();
         }
 
+        
         public int id { set; get; }
+        //chat
         public int chatId { get; set; }
+        public string chatHubUrl { get; set; }
 
+        
         //screensharing service
         public string screenSharingSessionId { get; set; }
         public string screenSharingHubUrl { get; set; }
+        /*public string screenSharingGroupId { get; set; }*/
         
         //videoConferencing service
         public string videoConferencingSessionId { get; set; }
