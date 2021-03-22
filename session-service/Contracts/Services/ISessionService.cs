@@ -6,7 +6,7 @@ namespace session_service.Contracts.Services
     public interface ISessionService
     {
 
-        public Task<Session> createSession();
+        public Task<SessionCreationDto> createSession();
         
         public Task<SessionModeratorDto> joinAsModerator(string sessionId,string moderatorName);
 

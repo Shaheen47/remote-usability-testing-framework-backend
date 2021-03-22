@@ -49,6 +49,7 @@ namespace session_service
             services.AddSingleton<IUserService, UserService>();
             
             services.AddSingleton<IVideoConferencingServiceProxy, VideoConferencingServiceProxy>();
+            services.AddSingleton<IScreensharingServiceProxy, ScreensharingServiceProxy>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,7 +71,7 @@ namespace session_service
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chatHub");
+                endpoints.MapHub<ChatHub>("/ChatHub");
             });
         }
     }

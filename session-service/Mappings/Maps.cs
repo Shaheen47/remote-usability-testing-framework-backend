@@ -10,6 +10,7 @@ namespace session_service.Mappings
             this.CreateMap<Session, SessionModeratorDto>().ReverseMap();
             this.CreateMap<Session, SessionParticipantDto>().ReverseMap();
             this.CreateMap<Session, SessionObserverDto>().ReverseMap();
+            this.CreateMap<Session, SessionCreationDto>().ReverseMap();
 
         }
     }
