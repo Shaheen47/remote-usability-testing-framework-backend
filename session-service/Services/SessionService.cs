@@ -3,6 +3,7 @@ using AutoMapper;
 using session_service.Contracts.Proxies;
 using session_service.Contracts.Repositories;
 using session_service.Contracts.Services;
+using session_service.Core.Exceptions;
 using session_service.Entities;
 
 namespace session_service.Services
@@ -73,6 +74,9 @@ namespace session_service.Services
         {
             Session session=await sessionRepository.FindById(sessionId);
             
+            //check whether the moderator is already joined
+            if (session.moderatorConferenceToken != null)
+                throw new ModeratorAlreadyJoinedExecption();
             //call conferencingServiceProxy to create conference connection for the moderator
             session.moderatorConferenceToken=await conferencingServiceProxy.joinAsModerator(session.videoConferencingSessionId);
             
@@ -87,6 +91,10 @@ namespace session_service.Services
         public async Task<SessionParticipantDto> joinAsParticipant(string sessionId, string observerName)
         {
             Session session=await sessionRepository.FindById(sessionId);
+            
+            //check whether the moderator is already joined
+            if (session.participantConferenceToken != null)
+                throw new ParticipantAlreadyJoinedExecption();
             
             //call conferencingServiceProxy to create conference connection for the participant
             session.participantConferenceToken = await conferencingServiceProxy.joinAsParticipant(session.videoConferencingSessionId);
