@@ -14,6 +14,6 @@ namespace session_service
         public string screenSharingHubUrl { get; set; }
 
         //videoConferencing service
-        public string observerstConferencingToken { get; set; }
+        public string observerConferencingToken { get; set; }
     }
 }

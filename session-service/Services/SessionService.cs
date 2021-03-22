@@ -33,7 +33,7 @@ namespace session_service.Services
             //create chat session
             Chat chat=await chatRepository.Create(new Chat());
             session.chatSessionId = chat.id;
-            session.chatHubUrl = "https://localhost:5001/Session/ChatHub";
+            session.chatHubUrl = "https://localhost:5001/ChatHub";
             
             //create videoconference session by communicating with the VideoConferencingService
             session.videoConferencingSessionId=await conferencingServiceProxy.createSession();
@@ -111,7 +111,7 @@ namespace session_service.Services
             await sessionRepository.Update(session);
             await sessionRepository.Save();
             var sessionObserverDto=Mapper.Map<Session, SessionObserverDto>(session);
-            sessionObserverDto.observerstConferencingToken = token;
+            sessionObserverDto.observerConferencingToken = token;
             return sessionObserverDto;
         }
 

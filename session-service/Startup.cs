@@ -71,7 +71,7 @@ namespace session_service
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chatHub");
+                endpoints.MapHub<ChatHub>("/ChatHub");
             });
         }
     }

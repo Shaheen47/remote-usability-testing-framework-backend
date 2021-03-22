@@ -29,12 +29,12 @@ namespace screensharing_service
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddCors(options => options.AddPolicy("CorsPolicy",
+            services.AddCors(options => options. AddPolicy("CorsPolicy",
                 builder =>
                 {
                     builder.AllowAnyHeader()
                         .AllowAnyMethod()
-                        .SetIsOriginAllowed((host) => true)
+                        .SetIsOriginAllowed (_ => true)
                         .AllowCredentials();
                 }));
             services.AddControllers();
