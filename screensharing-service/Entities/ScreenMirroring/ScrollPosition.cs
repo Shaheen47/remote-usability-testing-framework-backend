@@ -1,8 +1,8 @@
 namespace screensharing_service.Entities.ScreenMirroring
 {
-    public class ScrollPosition
+    public class ScrollPosition:ScreenMirroringEvent
     {
-        public int top { get; set; }
-        public int left { get; set; }
+        public int vertical { get; set; }
+        public int horizonal { get; set; }
     }
 }

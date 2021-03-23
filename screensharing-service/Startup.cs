@@ -44,9 +44,12 @@ namespace screensharing_service
             {
                 o.MaximumReceiveMessageSize = null;
             });
-
             services.AddSingleton<ISessionService, SessionService>();
-            services.AddSingleton<IDomRepository, DumbDomRepository>();
+            services.AddSingleton<IScreenMirroringRepository, DumbScreenMirroringRepository>();
+            
+            services.AddSingleton<IScreenEventsRecordingService, ScreenEventsRecordingService>();
+            services.AddSingleton<IScreenEventsReplyService, ScreenEventsReplyService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
