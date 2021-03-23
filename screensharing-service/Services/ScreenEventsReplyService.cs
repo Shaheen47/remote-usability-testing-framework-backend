@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.AspNetCore.SignalR;
 using screensharing_service.Contracts.Repositories;
 using screensharing_service.Contracts.Services;
@@ -24,30 +25,32 @@ namespace screensharing_service.Services
         public void startSessionReply(string sessionId)
         {
             var mirroringEvents = screenMirroringRepository.GetAllScreenMirroringEvents(sessionId);
-            Stopwatch stopwatch=Stopwatch.StartNew();
-            long lasttime= 0;
-            while (mirroringEvents.Count>0)
+            var sortedEvents = mirroringEvents.OrderBy(p=>p.timestamp).ToList();
+            
+            
+        Stopwatch stopwatch=Stopwatch.StartNew();
+        long lasttime= 0;
+        long sentEvents = 0;
+        while (sentEvents<(sortedEvents.Count))
+        {
+            var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
+            var eventsToSend = sortedEvents.Where(x => (x.timestamp <= elapsedMilliseconds) && (x.timestamp > lasttime))
+                .OrderBy(p=>p.timestamp).ToList();
+            foreach (ScreenMirroringEvent screenMirroringEvent in eventsToSend)
             {
-                var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
-                foreach (ScreenMirroringEvent screenMirroringEvent in mirroringEvents)
-                {
-                    if (screenMirroringEvent.timestamp <= elapsedMilliseconds&&screenMirroringEvent.timestamp>lasttime )
-                    {
-                        if (screenMirroringEvent.GetType() == typeof(DomEvent))
-                            hubContext.Clients.All.SendAsync("sentDom",((DomEvent)screenMirroringEvent).content);
-                        else if(screenMirroringEvent.GetType() == typeof(MousePosition))
-                            hubContext.Clients.All.SendAsync("sentMousePosition",((MousePosition)screenMirroringEvent).left,((MousePosition)screenMirroringEvent).top);
-                        else
-                            hubContext.Clients.All.SendAsync("sentScroll",((ScrollPosition)screenMirroringEvent).vertical);
-
-                        /*mirroringEvents.Remove(screenMirroringEvent);*/
-                    }
-                }
-
-                lasttime = elapsedMilliseconds;
-                System.Threading.Thread.Sleep(17);
-                
+                if (screenMirroringEvent.GetType() == typeof(DomEvent))
+                        hubContext.Clients.All.SendAsync("sentDom",((DomEvent)screenMirroringEvent).content);
+                else if(screenMirroringEvent.GetType() == typeof(MousePosition))
+                        hubContext.Clients.All.SendAsync("sentMousePosition",((MousePosition)screenMirroringEvent).left,((MousePosition)screenMirroringEvent).top);
+                else
+                        hubContext.Clients.All.SendAsync("sentScroll",((ScrollPosition)screenMirroringEvent).vertical);
+                sentEvents++;
             }
+
+            lasttime = elapsedMilliseconds;
+            System.Threading.Thread.Sleep(17);
+            
+        }
 
         }
 
