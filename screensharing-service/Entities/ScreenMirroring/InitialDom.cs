@@ -1,7 +1,7 @@
 using System;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace screensharing_service.Entities
+namespace screensharing_service.Entities.ScreenMirroring
 {
     public class InitialDom
     {
