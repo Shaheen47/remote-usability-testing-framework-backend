@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using screensharing_service.Contracts.Repositories;
 using screensharing_service.Contracts.Services;
 using screensharing_service.Hubs;
+using screensharing_service.Repositories;
 using screensharing_service.Services;
 
 
@@ -44,6 +46,7 @@ namespace screensharing_service
             });
 
             services.AddSingleton<ISessionService, SessionService>();
+            services.AddSingleton<IDomRepository, DumbDomRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
