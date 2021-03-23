@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using screensharing_service.Contracts.Repositories;
 using screensharing_service.Entities;
 using screensharing_service.Entities.ScreenMirroring;
@@ -35,9 +36,9 @@ namespace screensharing_service.Repositories
             domStore[sessionId].Add(scrollPosition);
         }
 
-        public IList<ScreenMirroringEvent> GetAllScreenMirroringEvents(string sessionId)
+        public IList<ScreenMirroringEvent> GetAllScreenMirroringEventsSortedByTimestamp(string sessionId)
         {
-            return domStore[sessionId];
+            return domStore[sessionId].OrderBy(p=>p.timestamp).ToList();
         }
         
     }

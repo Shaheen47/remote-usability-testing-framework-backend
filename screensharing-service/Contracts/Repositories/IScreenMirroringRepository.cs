@@ -14,6 +14,6 @@ namespace screensharing_service.Contracts.Repositories
 
         public void addScrollingEvent(ScrollPosition scrollPosition, string sessionId);
         
-        public IList<ScreenMirroringEvent> GetAllScreenMirroringEvents(string sessionId);
+        public IList<ScreenMirroringEvent> GetAllScreenMirroringEventsSortedByTimestamp(string sessionId);
     }
 }
