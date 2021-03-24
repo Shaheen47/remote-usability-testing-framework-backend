@@ -23,6 +23,6 @@ namespace session_service.Contracts.Services
         
         public void stopRecording(Session session);
         
-        public string getRecording(Session session);
+        public string getRecordingUrl(Session session);
     }
 }

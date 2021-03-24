@@ -16,7 +16,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            String api ="https://localhost:5003/Session/create-session";
+            String api ="http://videoconferencing-service:80/Session/create-session";
             StringContent content =
                 new StringContent(("{}"), Encoding.UTF8, "application/json");
             var response = await client.PostAsync( api, content);
@@ -35,7 +35,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            String api ="https://localhost:5003/Session/join-session-moderator";
+            String api ="http://videoconferencing-service:80/Session/join-session-moderator";
             ConferenceSession conferenceSession = new ConferenceSession();
             conferenceSession.sessionName = sessionId;
             StringContent content =
@@ -51,7 +51,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            String api ="https://localhost:5003/Session/join-session-participant";
+            String api ="https://videoconferencing-service:5003/Session/join-session-participant";
             ConferenceSession conferenceSession = new ConferenceSession();
             conferenceSession.sessionName = sessionId;
             StringContent content =
@@ -67,7 +67,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            String api ="https://localhost:5003/Session/join-session-observer";
+            String api ="https://videoconferencing-service:5003/Session/join-session-observer";
             ConferenceSession conferenceSession = new ConferenceSession();
             conferenceSession.sessionName = sessionId;
             StringContent content =

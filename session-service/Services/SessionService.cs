@@ -154,9 +154,10 @@ namespace session_service.Services
             throw new System.NotImplementedException();
         }
 
-        public string getRecording(Session session)
+        public string getRecordingUrl(Session session)
         {
             throw new System.NotImplementedException();
         }
+        
     }
 }

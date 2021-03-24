@@ -39,5 +39,6 @@ namespace screensharing_service.Controllers
            screenEventsReplyService.startSessionReply(loginDto.sessionId);
             return Ok("session");
         }
+        
     }
 }

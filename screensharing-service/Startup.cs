@@ -49,6 +49,8 @@ namespace screensharing_service
             
             services.AddSingleton<IScreenEventsRecordingService, ScreenEventsRecordingService>();
             services.AddSingleton<IScreenEventsReplyService, ScreenEventsReplyService>();
+            
+            services.AddSingleton<ISessionRepository, SessionRepository>();
 
         }
 

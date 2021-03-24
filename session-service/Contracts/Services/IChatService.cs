@@ -10,5 +10,6 @@ namespace session_service.Contracts.Services
         public Task addMessage(string chatId, ChatMessage message);
 
         public Task<List<ChatMessage>> GetChatMessages(string chatId);
+        
     }
 }

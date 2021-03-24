@@ -68,6 +68,14 @@ namespace session_service.Controllers
             return Created("observer",sessionObserverDto);
         }
         
+        [HttpGet]
+        [Route("get-recording-url")]
+        public async Task<IActionResult> getRecordingUrl([FromBody] SessionLoginDto loginDto)
+        {
+            var session = await sessionService.getSession(loginDto.sessionId);
+            var url = sessionService.getRecordingUrl(session);
+            return Ok(url);
+        }
         
         
     }

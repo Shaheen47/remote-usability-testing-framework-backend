@@ -49,7 +49,7 @@ namespace videoconferencing_service.Controllers
         }
         
         
-        [HttpPost]
+        [HttpPost]  
         [Route("join-session-observer")]
         public async Task<IActionResult> joinSessionAsObserver([FromBody] SessionDto sessionDto)
         {
