@@ -4,17 +4,34 @@ services:
     image: session-service:latest
     container_name: session-service-app
     ports:
-      - "5001:80"
+      - 5001:443
+      - 5000:80
+
     depends_on:
       - screensharing-service
       - videoconferencing-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=12345678
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
         
         
   screensharing-service:
     image: screensharing-service:latest
     container_name: screensharing-service-app
     ports:
-      - "5005:80"
+      - 5005:443
+      - 5004:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=12345678
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
 
 
 
@@ -22,9 +39,17 @@ services:
     image: videoconferencing-service:latest
     container_name: videoconferencing-service-app
     ports:
-      - "5003:80"
+      - 5003:443
+      - 5002:80
     depends_on:
       - openVidu
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=12345678
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
         
   openVidu:
     image: openvidu/openvidu-server-kms:2.17.0
@@ -33,3 +58,5 @@ services:
       - "4443:4443"
     environment:
       - OPENVIDU_SECRET=MY_SECRET
+    logging:
+      driver: none
