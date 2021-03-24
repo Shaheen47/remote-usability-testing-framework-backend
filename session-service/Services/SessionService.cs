@@ -32,7 +32,7 @@ namespace session_service.Services
             Session session = new Session();
             
             //create chat session
-            Chat chat=await chatRepository.Create(new Chat());
+            Chat chat=chatRepository.createChat(new Chat());
             session.chatSessionId = chat.id;
             session.chatHubUrl = "https://localhost:5001/ChatHub";
             
@@ -47,8 +47,7 @@ namespace session_service.Services
             // store 
             session=await sessionRepository.Create(session);
             await sessionRepository.Save();
-            await chatRepository.Save();
-            
+
             //return 
             var sessionCreationDto=Mapper.Map<Session, SessionCreationDto>(session);
             return sessionCreationDto;

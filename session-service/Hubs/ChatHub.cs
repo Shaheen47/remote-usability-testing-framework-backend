@@ -9,7 +9,12 @@ namespace session_service.Hubs
     public class ChatHub : Hub
     {
         private IChatService chatService;
-        
+
+        public ChatHub(IChatService chatService)
+        {
+            this.chatService = chatService;
+        }
+
         public async Task joinSession(string chatSessionId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, chatSessionId);
@@ -29,7 +34,7 @@ namespace session_service.Hubs
                 await Clients.Group(chatSessionId).SendAsync("messageSent", senderName, message);
             
             ChatMessage chatMessage = new ChatMessage(senderName,message,DateTime.Now);
-            await chatService.addMessage(chatSessionId,chatMessage);
+            chatService.addMessage(chatSessionId,chatMessage);
         }
     }
 }

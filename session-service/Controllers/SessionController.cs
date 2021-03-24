@@ -26,6 +26,13 @@ namespace session_service.Controllers
             return Created("session",sessionCreationDto);
         }
         
+        [HttpGet("{sessionId}")]
+        public async Task<IActionResult> getSession(string sessionId)
+        {
+            var session =await sessionService.getSession(sessionId);
+            return Ok(session);
+        }
+        
         
         [HttpPost]
         [Route("join-as-moderator")]

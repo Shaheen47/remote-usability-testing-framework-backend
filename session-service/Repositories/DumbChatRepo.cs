@@ -9,35 +9,15 @@ namespace session_service.Repositories
 {
     public class DumbChatRepo : IChatRepository
     {
-        private IList<Chat> chats;
+        private Dictionary<string,IList<ChatMessage> > chatMessages;
 
         public DumbChatRepo()
         {
-            chats = new List<Chat>();
+            chatMessages = new Dictionary<string, IList<ChatMessage>>();
         }
-
-        public async Task<IList<Chat>> FindAll()
-        {
-            return chats;
-        }
-
-        public async Task<Chat> FindById(string id)
-        {
-            foreach (var chat in chats)
-            {
-                if (chat.id == id)
-                    return chat;
-            }
-            return null;
-        }
-
-        public async Task<Chat> Create(Chat entity)
-        {
-            Chat chat = entity;
-            chat.id = RandomKeyGenerator.GetUniqueKey(10);
-            chats.Add(entity);
-            return chat;
-        }
+        
+        
+        
 
         public async Task<bool> Save()
         {
@@ -52,6 +32,25 @@ namespace session_service.Repositories
         public async Task<bool> Delete(Chat entity)
         {
             return true;
+        }
+
+        public Chat createChat(Chat chat)
+        {
+            Chat chat1 = chat;
+            chat1.id = RandomKeyGenerator.GetUniqueKey(10);
+            chatMessages.Add(chat1.id, new List<ChatMessage>());
+            return chat1;
+        }
+        
+
+        public  void addChatMessage(string chatId, ChatMessage message)
+        {
+              chatMessages[chatId].Add(message);
+        }
+
+        public IList<ChatMessage> getChatMessages(string chatId)
+        {
+            return chatMessages[chatId];
         }
     }
 }

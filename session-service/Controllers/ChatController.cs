@@ -22,7 +22,7 @@ namespace session_service.Controllers
         public async Task<IActionResult> getChat(string sessionId)
         {
             var session =await sessionService.getSession(sessionId);
-            var messages=await chatService.GetChatMessages(session.chatSessionId);
+            var messages=chatService.GetChatMessages(session.chatSessionId);
             return Ok(messages);
         }
     }
