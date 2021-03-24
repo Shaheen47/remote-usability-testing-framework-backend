@@ -15,7 +15,14 @@ namespace screensharing_service.Hubs
             this.screenEventsRecordingService = screenEventsRecordingService;
         }
 
-        public async Task joinSession(string sessionId)
+        public async Task joinSessionAsSubscriber(string sessionId)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
+            //
+            await Clients.OthersInGroup(sessionId).SendAsync("Send", $"{Context.ConnectionId} has joined the group {sessionId}.");
+        }
+        
+        public async Task joinSessionAsPublisher(string sessionId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
             //

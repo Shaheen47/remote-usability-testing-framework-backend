@@ -18,12 +18,11 @@ namespace session_service.Controllers
         private ISessionService sessionService;
         
         
-        [HttpGet]
-        [Route("get-chat")]
-        public async Task<IActionResult> getChat([FromBody] SessionLoginDto loginDto)
+        [HttpGet("{sessionId}")]
+        public async Task<IActionResult> getChat(string sessionId)
         {
-            var session =await sessionService.getSession(loginDto.sessionId);
-            var messages=chatService.GetChatMessages(session.chatSessionId);
+            var session =await sessionService.getSession(sessionId);
+            var messages=await chatService.GetChatMessages(session.chatSessionId);
             return Ok(messages);
         }
     }

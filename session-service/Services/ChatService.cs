@@ -16,6 +16,11 @@ namespace session_service.Services
             this.chatRepository = chatRepository;
         }
 
+        public async Task addChat(Chat chat)
+        {
+            await chatRepository.Create(chat);
+        }
+
         public async Task addMessage(string chatId, ChatMessage message)
         {
             Chat chat= await chatRepository.FindById(chatId);

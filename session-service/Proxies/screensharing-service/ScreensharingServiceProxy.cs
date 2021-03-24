@@ -16,7 +16,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            String api ="https://screensharing-service:80/Session/create-session";
+            String api ="http://screensharing-service:80/Session/create-session";
             StringContent content =
                 new StringContent(("{}"), Encoding.UTF8, "application/json");
             var response = await client.PostAsync( api, content);
