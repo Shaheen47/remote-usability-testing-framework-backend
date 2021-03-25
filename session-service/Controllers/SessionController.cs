@@ -106,8 +106,9 @@ namespace session_service.Controllers
         [Route("reply-screensharing")]
         public async Task<IActionResult> replySession([FromBody] SessionLoginDto loginDto)
         {
-            SessionObserverDto sessionObserverDto=await sessionService.joinAsObserver(loginDto.sessionId,"observer");
-            return Created("observer",sessionObserverDto);
+            Session session = await sessionService.getSession(loginDto.sessionId);
+            sessionService.replyScreensharing(session);
+            return Ok();
         }
         
         

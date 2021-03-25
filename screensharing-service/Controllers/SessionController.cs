@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using screensharing_service.Contracts.Services;
 using screensharing_service.Dtos;
@@ -13,11 +14,13 @@ namespace screensharing_service.Controllers
     {
         private ISessionService sessionService;
         private IScreenEventsReplyService screenEventsReplyService;
+        private readonly IMapper Mapper;
 
-        public SessionController(ISessionService sessionService,IScreenEventsReplyService screenEventsReplyService)
+        public SessionController(ISessionService sessionService,IScreenEventsReplyService screenEventsReplyService,IMapper Mapper)
         {
             this.sessionService = sessionService;
             this.screenEventsReplyService = screenEventsReplyService;
+            this.Mapper = Mapper;
         }
 
         [HttpPost]
@@ -25,14 +28,8 @@ namespace screensharing_service.Controllers
         public async Task<IActionResult> createSession()
         {
             Session session=await sessionService.createSession();
-            return Created("session",session);
-        }
-        
-        [HttpDelete("{sessionId}")]
-        public async Task<IActionResult> stopSession(string sessionId)
-        {
-            sessionService.closeSession(sessionId);
-            return NoContent();
+            SessionWithoutReplyDto sessionWithoutReplyDto=Mapper.Map<Session, SessionWithoutReplyDto>(session);
+            return Created("session",sessionWithoutReplyDto);
         }
         
         [HttpPost]
@@ -42,6 +39,15 @@ namespace screensharing_service.Controllers
             Session session=await sessionService.createSessionWithRecording();
             return Created("session",session);
         }
+        
+        
+        [HttpDelete("{sessionId}")]
+        public async Task<IActionResult> stopSession(string sessionId)
+        {
+            sessionService.closeSession(sessionId);
+            return NoContent();
+        }
+        
         
         
         [HttpPost]

@@ -33,6 +33,7 @@ namespace screensharing_service.Services
         {
             Session session = new Session();
             session.hubUrl = "https://localhost:5005/ScreenMirroringHubWithRecording";
+            session.replyHubUrl = "https://localhost:5005/ScreenMirroringHub";
             var createdSession=sessionRepository.createSession(session);
             return createdSession;
         }

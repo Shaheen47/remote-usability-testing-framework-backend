@@ -6,6 +6,7 @@ using session_service.Contracts.Services;
 using session_service.Core.Exceptions;
 using session_service.Dtos;
 using session_service.Entities;
+using session_service.Proxies;
 
 namespace session_service.Services
 {
@@ -69,9 +70,10 @@ namespace session_service.Services
             session.videoConferencingSessionId=await conferencingServiceProxy.createSession();
             
             //create screensharing session by communicating with the ScreensharingService
-            var screensharingSession=await screensharingServiceProxy.createSessionWithRecording();
+            RecordedScreensharingSession screensharingSession=await screensharingServiceProxy.createSessionWithRecording();
             session.screenSharingHubUrl = screensharingSession.hubUrl;
             session.screenSharingSessionId = screensharingSession.sessionId;
+            session.screenSharingReplyHubUrl = screensharingSession.replyHubUrl;
             
             // store 
             session=await sessionRepository.Create(session);
@@ -179,10 +181,6 @@ namespace session_service.Services
         {
             screensharingServiceProxy.replySession(session.screenSharingSessionId);
         }
-
-        private void f()
-        {
-            
-        }
+        
     }
 }

@@ -36,11 +36,11 @@ namespace screensharing_service.Services
                 foreach (ScreenMirroringEvent screenMirroringEvent in eventsToSend)
                 {
                     if (screenMirroringEvent.GetType() == typeof(DomEvent))
-                            hubContext.Clients.All.SendAsync("sentDom",((DomEvent)screenMirroringEvent).content);
+                            hubContext.Clients.Group(sessionId).SendAsync("sentDom",((DomEvent)screenMirroringEvent).content);
                     else if(screenMirroringEvent.GetType() == typeof(MousePosition))
-                            hubContext.Clients.All.SendAsync("sentMousePosition",((MousePosition)screenMirroringEvent).left,((MousePosition)screenMirroringEvent).top);
+                            hubContext.Clients.Group(sessionId).SendAsync("sentMousePosition",((MousePosition)screenMirroringEvent).left,((MousePosition)screenMirroringEvent).top);
                     else
-                            hubContext.Clients.All.SendAsync("sentScroll",((ScrollPosition)screenMirroringEvent).vertical);
+                            hubContext.Clients.Group(sessionId).SendAsync("sentScroll",((ScrollPosition)screenMirroringEvent).vertical);
                     sentEvents++;
                 }
 

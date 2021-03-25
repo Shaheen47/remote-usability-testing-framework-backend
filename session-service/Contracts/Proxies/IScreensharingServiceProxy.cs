@@ -7,7 +7,7 @@ namespace session_service.Contracts.Proxies
     {
         public Task<ScreensharingSession> createSession();
         
-        public Task<ScreensharingSession> createSessionWithRecording();
+        public Task<RecordedScreensharingSession> createSessionWithRecording();
         
         public Task stopSession(string sessionId);
         

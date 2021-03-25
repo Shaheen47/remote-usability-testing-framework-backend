@@ -28,7 +28,7 @@ namespace session_service.Proxies
             
         }
 
-        public async Task<ScreensharingSession> createSessionWithRecording()
+        public async Task<RecordedScreensharingSession> createSessionWithRecording()
         {
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
@@ -39,7 +39,7 @@ namespace session_service.Proxies
                 new StringContent(("{}"), Encoding.UTF8, "application/json");
             var response = await client.PostAsync( api, content);
             var responeContent = await response.Content.ReadAsStringAsync();
-            ScreensharingSession session=JsonConvert.DeserializeObject<ScreensharingSession>(responeContent);
+            RecordedScreensharingSession session=JsonConvert.DeserializeObject<RecordedScreensharingSession>(responeContent);
             return session;
         }
 

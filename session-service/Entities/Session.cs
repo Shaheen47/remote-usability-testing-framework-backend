@@ -26,6 +26,7 @@ namespace session_service.Entities
         //screensharing service
         public string screenSharingSessionId { get; set; }
         public string screenSharingHubUrl { get; set; }
+        public string screenSharingReplyHubUrl { get; set; }
         /*public string screenSharingGroupId { get; set; }*/
         
         //videoConferencing service
