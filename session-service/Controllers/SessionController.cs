@@ -54,13 +54,13 @@ namespace session_service.Controllers
             return Ok(session);
         }
         
-        [HttpGet("{sessionId}")]
+        /*[HttpGet("{sessionId}")]
         public async Task<IActionResult> getAllModeratorSessions(string sessionId,[FromBody] ModeratorLoginDto loginDto )
         {
             var moderator=await moderatorService.getModerator(loginDto.id);
             var sessions = moderator.sessions;
             return Ok(sessions);
-        }
+        }*/
         
         
         

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.SignalR;
@@ -13,25 +14,27 @@ namespace screensharing_service.Services
         
         private IScreenMirroringRepository screenMirroringRepository;
         private IHubContext<ScreenMirroringHub> hubContext;
+        private Dictionary<string,Stopwatch>  stopwatchs;
         
         
         public ScreenEventsReplyService(IScreenMirroringRepository screenMirroringRepository,IHubContext<ScreenMirroringHub> hubContext)
         {
             this.screenMirroringRepository = screenMirroringRepository;
             this.hubContext =hubContext;
+            this.stopwatchs = new Dictionary<string, Stopwatch>();
         }
 
         
         public void startSessionReply(string sessionId)
         {
-            var mirroringEvents = screenMirroringRepository.GetAllScreenMirroringEventsSortedByTimestamp(sessionId); 
-            Stopwatch stopwatch=Stopwatch.StartNew();
-            long lasttime= 0;
+            var mirroringEvents = screenMirroringRepository.GetAllScreenMirroringEventsSortedByTimestamp(sessionId);
             long sentEvents = 0;
+            long startingTime= 0;
+            stopwatchs[sessionId]=Stopwatch.StartNew();
             while (sentEvents<(mirroringEvents.Count))
             {
-                var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
-                var eventsToSend = mirroringEvents.Where(x => (x.timestamp <= elapsedMilliseconds) && (x.timestamp > lasttime))
+                var elapsedMilliseconds =  stopwatchs[sessionId].ElapsedMilliseconds;
+                var eventsToSend = mirroringEvents.Where(x => (x.timestamp <= elapsedMilliseconds) && (x.timestamp > startingTime))
                     .OrderBy(p=>p.timestamp).ToList();
                 foreach (ScreenMirroringEvent screenMirroringEvent in eventsToSend)
                 {
@@ -44,7 +47,7 @@ namespace screensharing_service.Services
                     sentEvents++;
                 }
 
-                lasttime = elapsedMilliseconds;
+                startingTime = elapsedMilliseconds;
                 System.Threading.Thread.Sleep(17);
                 
             }

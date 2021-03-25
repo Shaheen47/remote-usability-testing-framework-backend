@@ -7,7 +7,7 @@ namespace session_service.Controllers
 {
     
     [ApiController]
-    [Route("[Moderator]")]
+    [Route("[controller]")]
     public class ModeratorController:ControllerBase
     {
         private IModeratorService moderatorService;
