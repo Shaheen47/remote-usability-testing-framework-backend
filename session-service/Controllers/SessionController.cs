@@ -13,6 +13,7 @@ namespace session_service.Controllers
     public class SessionController: ControllerBase
     {
         private ISessionService sessionService;
+        private IModeratorService moderatorService;
 
         public SessionController(ISessionService sessionService)
         {
@@ -22,13 +23,17 @@ namespace session_service.Controllers
         [HttpPost]
         public async Task<IActionResult> createSession([FromBody] SessionCreationRequestDto creationDto)
         {
+            /*var moderator = await moderatorService.getModerator(creationDto.moderatorId);*/
+            
             SessionCreationResponseDto sessionCreationDto;
             if (creationDto.isRecorded)
                 sessionCreationDto=await sessionService.createSessionWithRecording();
                 
             else
                 sessionCreationDto=await sessionService.createSession();
-            
+            var session=await sessionService.getSession(sessionCreationDto.id);
+            /*moderator.sessions.Add(session);
+            await moderatorService.updateModerator(moderator);*/
             return Created("session",sessionCreationDto);
 
         }
@@ -47,6 +52,14 @@ namespace session_service.Controllers
         {
             var session =await sessionService.getSession(sessionId);
             return Ok(session);
+        }
+        
+        [HttpGet("{sessionId}")]
+        public async Task<IActionResult> getAllModeratorSessions(string sessionId,[FromBody] ModeratorLoginDto loginDto )
+        {
+            var moderator=await moderatorService.getModerator(loginDto.id);
+            var sessions = moderator.sessions;
+            return Ok(sessions);
         }
         
         

@@ -43,10 +43,11 @@ namespace session_service
             
             services.AddSingleton<ISessionRepository, DumbSessionRepo>();
             services.AddSingleton<IChatRepository, DumbChatRepo>();
+            services.AddSingleton<IModeratorRepository,DumbModeratorRepository>();
             
             services.AddSingleton<ISessionService, SessionService>();
             services.AddSingleton<IChatService, ChatService>();
-            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IModeratorService, ModeratorService>();
             
             services.AddSingleton<IVideoConferencingServiceProxy, VideoConferencingServiceProxy>();
             services.AddSingleton<IScreensharingServiceProxy, ScreensharingServiceProxy>();
