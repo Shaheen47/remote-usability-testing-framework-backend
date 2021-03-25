@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace videoconferencing_service.Services
+namespace videoconferencing_service.Contracts.Services
 {
     public interface ISessionService
     {

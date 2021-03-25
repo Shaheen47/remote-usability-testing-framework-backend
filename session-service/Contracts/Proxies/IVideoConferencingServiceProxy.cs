@@ -16,7 +16,7 @@ namespace session_service.Contracts.Proxies
 
         public Task startRecording(string sessionId);
         
-        public Task stopRecording(string sessionId);
+        public Task<string>  stopRecording(string sessionId);
         
     }
 }

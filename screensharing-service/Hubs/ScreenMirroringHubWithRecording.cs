@@ -5,17 +5,23 @@ using screensharing_service.Dtos;
 
 namespace screensharing_service.Hubs
 {
-    public class DomHub : Hub
+    public class ScreenMirroringHubWithRecording: Hub,IScreenMirroringHub
     {
-
         private IScreenEventsRecordingService screenEventsRecordingService;
 
-        public DomHub(IScreenEventsRecordingService screenEventsRecordingService)
+        public ScreenMirroringHubWithRecording(IScreenEventsRecordingService screenEventsRecordingService)
         {
             this.screenEventsRecordingService = screenEventsRecordingService;
         }
 
-        public async Task joinSession(string sessionId)
+        public async Task joinSessionAsSubscriber(string sessionId)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
+            //
+            await Clients.OthersInGroup(sessionId).SendAsync("Send", $"{Context.ConnectionId} has joined the group {sessionId}.");
+        }
+        
+        public async Task joinSessionAsPublisher(string sessionId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
             //
@@ -50,6 +56,5 @@ namespace screensharing_service.Hubs
             await Clients.OthersInGroup(sessionId).SendAsync("sentScroll",vertical);
             screenEventsRecordingService.addScrollingEvent(vertical,sessionId);
         }
-        
     }
 }

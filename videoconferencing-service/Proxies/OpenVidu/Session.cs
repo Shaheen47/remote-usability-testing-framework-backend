@@ -18,8 +18,6 @@ namespace videoconferencing_service.Proxies.OpenVidu
         [JsonProperty(PropertyName = "createdAt")]
         public long createdAt{ get; set; }
         
-        [JsonProperty(PropertyName = "recordingMode")]
-        public RecordingMode recordingMode{ get; set; }
         
         [JsonProperty(PropertyName = "recording")]
         public bool recording{ get; set; }
@@ -99,7 +97,7 @@ namespace videoconferencing_service.Proxies.OpenVidu
             return recording;
         }
         
-        public async Task<Recording> stopRecording(string openViduUrl, string openViduSecret)
+        public async  Task<Recording> stopRecording(string openViduUrl, string openViduSecret)
         {
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
@@ -108,13 +106,13 @@ namespace videoconferencing_service.Proxies.OpenVidu
             var byteArray = Encoding.ASCII.GetBytes("OPENVIDUAPP"+":"+openViduSecret);
             client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-            String api =openViduUrl+ "/openvidu/api/recordings/stop/"+theRecording.id;
+            String api =openViduUrl+ "/openvidu/api/recordings/stop/"+sessionId;
             StringContent content =
                 new StringContent("{}", Encoding.UTF8, "application/json");
             var response = await client.PostAsync(api, content);
             var responeContent = await response.Content.ReadAsStringAsync();
             Recording recording=JsonConvert.DeserializeObject<Recording>(responeContent);
-            theRecording = recording;
+            this.theRecording = recording;
             return recording;
             
         }

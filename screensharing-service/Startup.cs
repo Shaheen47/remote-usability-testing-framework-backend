@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using screensharing_service.Contracts.Repositories;
 using screensharing_service.Contracts.Services;
 using screensharing_service.Hubs;
+using screensharing_service.Mappings;
 using screensharing_service.Repositories;
 using screensharing_service.Services;
 
@@ -39,6 +34,9 @@ namespace screensharing_service
                         .SetIsOriginAllowed (_ => true)
                         .AllowCredentials();
                 }));
+            
+            services.AddAutoMapper(typeof(Maps));
+            
             services.AddControllers();
             services.AddSignalR(o =>
             {
@@ -49,6 +47,8 @@ namespace screensharing_service
             
             services.AddSingleton<IScreenEventsRecordingService, ScreenEventsRecordingService>();
             services.AddSingleton<IScreenEventsReplyService, ScreenEventsReplyService>();
+            
+            services.AddSingleton<ISessionRepository, SessionRepository>();
 
         }
 
@@ -72,7 +72,8 @@ namespace screensharing_service
 
             app.UseEndpoints(endpoints => { 
                 endpoints.MapControllers();
-                endpoints.MapHub<DomHub>("/DomHub");
+                endpoints.MapHub<ScreenMirroringHub>("/ScreenMirroringHub");
+                endpoints.MapHub<ScreenMirroringHubWithRecording>("/ScreenMirroringHubWithRecording");
             });
             
             

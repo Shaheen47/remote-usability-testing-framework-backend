@@ -4,5 +4,7 @@ namespace screensharing_service.Entities
     {
         public string sessionId { get; set; }
         public string hubUrl { get; set; }
+        
+        public string replyHubUrl { get; set; }
     }
 }
