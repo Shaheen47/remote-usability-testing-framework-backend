@@ -74,7 +74,8 @@ namespace screensharing_service
 
             app.UseEndpoints(endpoints => { 
                 endpoints.MapControllers();
-                endpoints.MapHub<DomHub>("/DomHub");
+                endpoints.MapHub<ScreenMirroringHub>("/ScreenMirroringHub");
+                endpoints.MapHub<ScreenMirroringHubWithRecording>("/ScreenMirroringHubWithRecording");
             });
             
             

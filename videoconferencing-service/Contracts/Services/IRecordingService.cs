@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using videoconferencing_service.Proxies.OpenVidu;
 
-namespace videoconferencing_service.Services
+namespace videoconferencing_service.Contracts.Services
 {
     public interface IRecordingService
     {

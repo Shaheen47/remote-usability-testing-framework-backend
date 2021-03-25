@@ -5,12 +5,11 @@ using screensharing_service.Dtos;
 
 namespace screensharing_service.Hubs
 {
-    public class DomHub : Hub
+    public class ScreenMirroringHubWithRecording: Hub,IScreenMirroringHub
     {
-
         private IScreenEventsRecordingService screenEventsRecordingService;
 
-        public DomHub(IScreenEventsRecordingService screenEventsRecordingService)
+        public ScreenMirroringHubWithRecording(IScreenEventsRecordingService screenEventsRecordingService)
         {
             this.screenEventsRecordingService = screenEventsRecordingService;
         }
@@ -57,6 +56,5 @@ namespace screensharing_service.Hubs
             await Clients.OthersInGroup(sessionId).SendAsync("sentScroll",vertical);
             screenEventsRecordingService.addScrollingEvent(vertical,sessionId);
         }
-        
     }
 }

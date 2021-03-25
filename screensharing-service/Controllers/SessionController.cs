@@ -28,6 +28,21 @@ namespace screensharing_service.Controllers
             return Created("session",session);
         }
         
+        [HttpDelete("{sessionId}")]
+        public async Task<IActionResult> stopSession(string sessionId)
+        {
+            sessionService.closeSession(sessionId);
+            return NoContent();
+        }
+        
+        [HttpPost]
+        [Route("create-session-with-recording")]
+        public async Task<IActionResult> createSessionWithRecording()
+        {
+            Session session=await sessionService.createSessionWithRecording();
+            return Created("session",session);
+        }
+        
         
         [HttpPost]
         [Route("reply-session")]

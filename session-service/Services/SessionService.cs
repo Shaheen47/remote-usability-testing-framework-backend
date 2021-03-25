@@ -4,6 +4,7 @@ using session_service.Contracts.Proxies;
 using session_service.Contracts.Repositories;
 using session_service.Contracts.Services;
 using session_service.Core.Exceptions;
+using session_service.Dtos;
 using session_service.Entities;
 
 namespace session_service.Services
@@ -26,11 +27,11 @@ namespace session_service.Services
             this.Mapper = Mapper;
         }
 
-        public async Task<SessionCreationDto> createSession()
+        public async Task<SessionCreationResponseDto> createSession()
         {
             
             Session session = new Session();
-            
+            session.isRecorded = false;
             //create chat session
             Chat chat=chatRepository.createChat(new Chat());
             session.chatSessionId = chat.id;
@@ -49,24 +50,59 @@ namespace session_service.Services
             await sessionRepository.Save();
 
             //return 
-            var sessionCreationDto=Mapper.Map<Session, SessionCreationDto>(session);
+            var sessionCreationDto=Mapper.Map<Session, SessionCreationResponseDto>(session);
             return sessionCreationDto;
             
         }
+
         
-        public void stopSession(Session session)
+        public async Task<SessionCreationResponseDto> createSessionWithRecording()
+        {
+            Session session = new Session();
+            session.isRecorded = true;
+            //create chat session
+            Chat chat=chatRepository.createChat(new Chat());
+            session.chatSessionId = chat.id;
+            session.chatHubUrl = "https://localhost:5001/ChatHubWithRecording";
+            
+            //create videoconference session by communicating with the VideoConferencingService
+            session.videoConferencingSessionId=await conferencingServiceProxy.createSession();
+            
+            //create screensharing session by communicating with the ScreensharingService
+            var screensharingSession=await screensharingServiceProxy.createSessionWithRecording();
+            session.screenSharingHubUrl = screensharingSession.hubUrl;
+            session.screenSharingSessionId = screensharingSession.sessionId;
+            
+            // store 
+            session=await sessionRepository.Create(session);
+            await sessionRepository.Save();
+
+            //return 
+            var sessionCreationDto=Mapper.Map<Session, SessionCreationResponseDto>(session);
+            return sessionCreationDto;
+            
+        }
+
+        
+        public async Task stopSession(Session session)
         {
             
             //stop session and chat
             
             
-            //stop videoconference
             
+            //stop video recording and get the url
+            if(session.isRecorded) 
+                session.videoRecordingUrl=await conferencingServiceProxy.stopRecording(session.videoConferencingSessionId);
+
+            //stop video session
+            conferencingServiceProxy.stopSession(session.videoConferencingSessionId);
             
-            //stop screensharing 
+            //stop screensharing session
+            screensharingServiceProxy.stopSession(session.screenSharingSessionId);
+            
 
             
-            throw new System.NotImplementedException();
         }
 
         public async Task<SessionModeratorDto> joinAsModerator(string sessionId, string observerName)
@@ -97,6 +133,10 @@ namespace session_service.Services
             
             //call conferencingServiceProxy to create conference connection for the participant
             session.participantConferenceToken = await conferencingServiceProxy.joinAsParticipant(session.videoConferencingSessionId);
+            
+            //check whether to start recording or not
+            if (session.isRecorded == true)
+                await conferencingServiceProxy.startRecording(session.videoConferencingSessionId);
             
             //save
             await sessionRepository.Update(session);
@@ -129,34 +169,20 @@ namespace session_service.Services
             return session;
         }
         
-        
-
-        public void startRecording(Session session)
-        {
-            
-            //start videoconference recording
-            
-            
-            //start screensharing  recording
-            
-            throw new System.NotImplementedException();
-        }
-
-        public void stopRecording(Session session)
-        {
-            
-            //stop videoconference recording
-            
-            
-            //stop screensharing  recording
-            
-            throw new System.NotImplementedException();
-        }
 
         public string getRecordingUrl(Session session)
         {
             throw new System.NotImplementedException();
         }
-        
+
+        public void replyScreensharing(Session session)
+        {
+            screensharingServiceProxy.replySession(session.screenSharingSessionId);
+        }
+
+        private void f()
+        {
+            
+        }
     }
 }

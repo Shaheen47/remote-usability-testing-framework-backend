@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using videoconferencing_service.Contracts.Services;
 using videoconferencing_service.Proxies.OpenVidu;
 
 namespace videoconferencing_service.Services
@@ -31,7 +32,7 @@ namespace videoconferencing_service.Services
             await session.startRecording(openViduUrl, openViduSecret);
         }
 
-        public async Task<string> stopRecording(string sessionId)
+        public async Task<string>  stopRecording(string sessionId)
         {
             Session session=conferenceProviderProxy.getSession(sessionId);
             Recording recording =await session.stopRecording(openViduUrl, openViduSecret);

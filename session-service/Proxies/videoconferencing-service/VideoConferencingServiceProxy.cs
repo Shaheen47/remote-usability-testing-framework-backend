@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using session_service.Contracts.Proxies;
+using session_service.Dtos;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace session_service.Proxies
@@ -26,9 +27,14 @@ namespace session_service.Proxies
             return session.sessionName;
         }
 
-        public Task stopSession(string sessionId)
+        public async Task stopSession(string sessionId)
         {
-            throw new NotImplementedException();
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            HttpClient client = new HttpClient(clientHandler);
+            String api ="https://localhost:5003/Session/"+sessionId;
+            var response = await client.DeleteAsync( api);
+            var responeContent = await response.Content.ReadAsStringAsync();
         }
 
         public async Task<string> joinAsModerator(string sessionId)
@@ -82,14 +88,36 @@ namespace session_service.Proxies
             return conferenceToken.token;
         }
 
-        public Task startRecording(string sessionId)
+        public async Task startRecording(string sessionId)
         {
-            throw new System.NotImplementedException();
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            HttpClient client = new HttpClient(clientHandler);
+            /*String api ="http://videoconferencing-service:80/Session/join-session-observer";*/
+            String api ="https://localhost:5003/Recording/start-record";
+            ConferenceSession conferenceSession = new ConferenceSession();
+            conferenceSession.sessionName = sessionId;
+            StringContent content =
+                new StringContent((JsonSerializer.Serialize(conferenceSession)), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync( api, content);
+            var responeContent = await response.Content.ReadAsStringAsync();
         }
 
-        public Task stopRecording(string sessionId)
+        public async Task<string> stopRecording(string sessionId)
         {
-            throw new System.NotImplementedException();
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            HttpClient client = new HttpClient(clientHandler);
+            /*String api ="http://videoconferencing-service:80/Session/join-session-observer";*/
+            String api ="https://localhost:5003/Recording/stop-record";
+            ConferenceSession conferenceSession = new ConferenceSession();
+            conferenceSession.sessionName = sessionId;
+            StringContent content =
+                new StringContent((JsonSerializer.Serialize(conferenceSession)), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync( api, content);
+            var responeContent = await response.Content.ReadAsStringAsync();
+            VideoRecordingDto videoRecording=JsonConvert.DeserializeObject<VideoRecordingDto>(responeContent);
+            return videoRecording.url;
         }
     }
 }

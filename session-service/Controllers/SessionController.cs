@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using session_service.Contracts.Services;
 using session_service.Core.Exceptions;
+using session_service.Dtos;
 using session_service.Entities;
 
 namespace session_service.Controllers
@@ -19,12 +20,27 @@ namespace session_service.Controllers
         }
 
         [HttpPost]
-        [Route("create-session")]
-        public async Task<IActionResult> createSession()
+        public async Task<IActionResult> createSession([FromBody] SessionCreationRequestDto creationDto)
         {
-            SessionCreationDto sessionCreationDto=await sessionService.createSession();
+            SessionCreationResponseDto sessionCreationDto;
+            if (creationDto.isRecorded)
+                sessionCreationDto=await sessionService.createSessionWithRecording();
+                
+            else
+                sessionCreationDto=await sessionService.createSession();
+            
             return Created("session",sessionCreationDto);
+
         }
+        
+        [HttpDelete("{sessionId}")]
+        public async Task<IActionResult> stopSession(string sessionId)
+        {
+            Session session = await sessionService.getSession(sessionId);
+            await sessionService.stopSession(session);
+            return NoContent();
+        }
+        
         
         [HttpGet("{sessionId}")]
         public async Task<IActionResult> getSession(string sessionId)
@@ -32,6 +48,8 @@ namespace session_service.Controllers
             var session =await sessionService.getSession(sessionId);
             return Ok(session);
         }
+        
+        
         
         
         [HttpPost]
@@ -82,6 +100,14 @@ namespace session_service.Controllers
             var session = await sessionService.getSession(loginDto.sessionId);
             var url = sessionService.getRecordingUrl(session);
             return Ok(url);
+        }
+        
+        [HttpPost]
+        [Route("reply-screensharing")]
+        public async Task<IActionResult> replySession([FromBody] SessionLoginDto loginDto)
+        {
+            SessionObserverDto sessionObserverDto=await sessionService.joinAsObserver(loginDto.sessionId,"observer");
+            return Created("observer",sessionObserverDto);
         }
         
         

@@ -16,6 +16,8 @@ namespace session_service.Entities
 
         
         public string id { set; get; }
+        
+        public bool isRecorded { set; get; }
         //chat
         public string chatSessionId { get; set; }
         public string chatHubUrl { get; set; }
@@ -31,6 +33,8 @@ namespace session_service.Entities
         public string moderatorConferenceToken { get; set; }
         public string participantConferenceToken { get; set; }
         public IList<string> observersConferencingTokens { get; set; }
+        
+        public string videoRecordingUrl { get; set; }
         
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using videoconferencing_service.Contracts.Repositories;
+using videoconferencing_service.Contracts.Services;
 using videoconferencing_service.Proxies.OpenVidu;
 
 namespace videoconferencing_service.Services
@@ -42,7 +43,8 @@ namespace videoconferencing_service.Services
         public async Task closeSession(string sessionId)
         {
             await conferenceProviderProxy.endSession(sessionId);
-            sessionRepository.removeSession(sessionId);
+            /*sessionRepository.removeSession(sessionId);*/
+            //we need to deal with both active sessions and saved sessions information
         }
 
         public async Task<String> joinSessionAsModerator(string sessionId)

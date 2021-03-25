@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using videoconferencing_service.Contracts.Services;
 using videoconferencing_service.Dtos;
 using videoconferencing_service.Services;
 
@@ -22,17 +23,17 @@ namespace videoconferencing_service.Controllers
         public async Task<IActionResult> startRecording([FromBody] SessionDto sessionDto)
         {
             await recordingService.startRecording(sessionDto.sessionName);
-            return NoContent();
+            return Ok();
         }
         
         [HttpPost]
         [Route("stop-record")]
         public async Task<IActionResult> stopRecording([FromBody] SessionDto sessionDto)
         {
-            string url= await recordingService.stopRecording(sessionDto.sessionName);
-            RecordingDto recordingDto = new RecordingDto();
-            recordingDto.url = url;
-            return Created("url", recordingDto);
+            string url =await recordingService.stopRecording(sessionDto.sessionName);
+           RecordingDto recordingDto = new RecordingDto();
+           recordingDto.url = url;
+           return Created("url", recordingDto);
         }
         
         /*[HttpDelete]

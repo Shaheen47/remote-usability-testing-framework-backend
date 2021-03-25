@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using videoconferencing_service.Contracts.Repositories;
+using videoconferencing_service.Contracts.Services;
 using videoconferencing_service.Proxies.OpenVidu;
 using videoconferencing_service.Repositories;
 using videoconferencing_service.Services;

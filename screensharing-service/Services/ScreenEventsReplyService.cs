@@ -12,10 +12,10 @@ namespace screensharing_service.Services
     {
         
         private IScreenMirroringRepository screenMirroringRepository;
-        private IHubContext<DomHub> hubContext;
+        private IHubContext<ScreenMirroringHub> hubContext;
         
         
-        public ScreenEventsReplyService(IScreenMirroringRepository screenMirroringRepository,IHubContext<DomHub> hubContext)
+        public ScreenEventsReplyService(IScreenMirroringRepository screenMirroringRepository,IHubContext<ScreenMirroringHub> hubContext)
         {
             this.screenMirroringRepository = screenMirroringRepository;
             this.hubContext =hubContext;
@@ -57,6 +57,16 @@ namespace screensharing_service.Services
         }
 
         public void pauseSessionReply(string sessionId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void continueSessionReply(string sessionId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void replyFromTimestamp(string sessionId, long timestamp)
         {
             throw new System.NotImplementedException();
         }

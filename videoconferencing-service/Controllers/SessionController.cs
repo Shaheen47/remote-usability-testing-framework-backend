@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using videoconferencing_service.Contracts.Services;
 using videoconferencing_service.Dtos;
 using videoconferencing_service.Services;
 
@@ -29,11 +30,10 @@ namespace videoconferencing_service.Controllers
             return Created("sessionName",sessionDto);
         }
         
-        [HttpDelete("{sessionName}")]
-        [Route("close-session")]
-        public async Task<IActionResult> closeSession(SessionDto sessionDto)
+        [HttpDelete("{sessionId}")]
+        public async Task<IActionResult> closeSession(string sessionId)
         {
-            await sessionService.closeSession(sessionDto.sessionName);
+            await sessionService.closeSession(sessionId);
             return NoContent();
         }
         

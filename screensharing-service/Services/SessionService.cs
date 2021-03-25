@@ -17,7 +17,22 @@ namespace screensharing_service.Services
         public async Task<Session> createSession()
         {
             Session session = new Session();
-            session.hubUrl = "https://localhost:5005/DomHub";
+            session.hubUrl = "https://localhost:5005/ScreenMirroringHub";
+            var createdSession=sessionRepository.createSession(session);
+            return createdSession;
+        }
+
+        public void closeSession(string sessionId)
+        {
+            //delete from active sessions
+            /*throw new System.NotImplementedException();*/
+            
+        }
+
+        public async Task<Session> createSessionWithRecording()
+        {
+            Session session = new Session();
+            session.hubUrl = "https://localhost:5005/ScreenMirroringHubWithRecording";
             var createdSession=sessionRepository.createSession(session);
             return createdSession;
         }
