@@ -103,17 +103,16 @@ namespace screensharing_service.Services
             
             
             // basic solution for now
-            /*performMirroring(sessionId);*/
-            
-            
-            
-            
+
+
+
+
             //much better solution
-            
+
             // send just the latest mouse position and scroll position
-            
+
             // send clear page
-            
+
 
             // send all dom events from beginning or from the last initialize
         }

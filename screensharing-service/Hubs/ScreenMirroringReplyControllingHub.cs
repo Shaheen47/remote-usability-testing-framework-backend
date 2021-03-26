@@ -32,14 +32,15 @@ namespace screensharing_service.Hubs
              await Clients.All.SendAsync("test", "continueSessionReply done");
         }
         
-        /*public async Task seekReply(string sessionId,long timestamp)
+        public async Task seekReply(string sessionId,long timestamp)
         {
-            await replyService.replyFromTimestamp(sessionId,timestamp);
+            replyService.replyFromTimestamp(sessionId,timestamp);
+            await Clients.All.SendAsync("test", "seekReply done");
         }
         
         public async Task stopReply(string sessionId)
         {
             replyService.stopSessionReply(sessionId);
-        }*/
+        }
     }
 }
