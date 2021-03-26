@@ -7,5 +7,7 @@ namespace session_service.Proxies
         public string hubUrl { get; set; }
         
         public string replyHubUrl { get; set; }
+        
+        public string replyControllingHubUrl { get; set; }
     }
 }

@@ -106,23 +106,24 @@ namespace session_service.Controllers
             return Created("observer",sessionObserverDto);
         }
         
-        [HttpGet]
+        
+        /*[HttpGet]
         [Route("get-recording-url")]
         public async Task<IActionResult> getRecordingUrl([FromBody] SessionLoginDto loginDto)
         {
             var session = await sessionService.getSession(loginDto.sessionId);
             var url = sessionService.getRecordingUrl(session);
             return Ok(url);
-        }
+        }*/
         
-        [HttpPost]
+        /*[HttpPost]
         [Route("reply-screensharing")]
         public async Task<IActionResult> replySession([FromBody] SessionLoginDto loginDto)
         {
             Session session = await sessionService.getSession(loginDto.sessionId);
             sessionService.replyScreensharing(session);
             return Ok();
-        }
+        }*/
         
         
     }

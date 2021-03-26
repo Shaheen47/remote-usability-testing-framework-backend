@@ -74,6 +74,7 @@ namespace screensharing_service
                 endpoints.MapControllers();
                 endpoints.MapHub<ScreenMirroringHub>("/ScreenMirroringHub");
                 endpoints.MapHub<ScreenMirroringHubWithRecording>("/ScreenMirroringHubWithRecording");
+                endpoints.MapHub<ScreenMirroringReplyControllingHub>("/ScreenMirroringReplyControllingHub");
             });
             
             

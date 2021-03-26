@@ -1,6 +1,8 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using screensharing_service.Contracts.Repositories;
 using screensharing_service.Contracts.Services;
@@ -14,64 +16,114 @@ namespace screensharing_service.Services
         
         private IScreenMirroringRepository screenMirroringRepository;
         private IHubContext<ScreenMirroringHub> hubContext;
-        private Dictionary<string,Stopwatch>  stopwatchs;
+        private Dictionary<string, IList<ScreenMirroringEvent>> mirroringEventsDic;
+        private ConcurrentDictionary<string, bool> isReplying;
+        // the running time
+        private ConcurrentDictionary<string,Stopwatch>  stopwatch;
+        // all events occured before this time is already sent
+        private ConcurrentDictionary<string, long> elapsedTime;
+        // we need some sort of added time to deal with replyFromTimestamp
+        private ConcurrentDictionary<string, long> addedTime;
         
         
         public ScreenEventsReplyService(IScreenMirroringRepository screenMirroringRepository,IHubContext<ScreenMirroringHub> hubContext)
         {
             this.screenMirroringRepository = screenMirroringRepository;
             this.hubContext =hubContext;
-            this.stopwatchs = new Dictionary<string, Stopwatch>();
+            this.stopwatch = new ConcurrentDictionary<string, Stopwatch>();
+            this.mirroringEventsDic = new Dictionary<string, IList<ScreenMirroringEvent>>();
+            this.isReplying = new ConcurrentDictionary<string, bool>();
+            this.elapsedTime = new ConcurrentDictionary<string, long>();
+            addedTime = new ConcurrentDictionary<string, long>();
         }
 
         
-        public void startSessionReply(string sessionId)
+        
+        private  void performMirroring(string sessionId)
         {
-            var mirroringEvents = screenMirroringRepository.GetAllScreenMirroringEventsSortedByTimestamp(sessionId);
-            long sentEvents = 0;
-            long startingTime= 0;
-            stopwatchs[sessionId]=Stopwatch.StartNew();
-            while (sentEvents<(mirroringEvents.Count))
+            isReplying[sessionId] = true;
+            while (isReplying[sessionId])
             {
-                var elapsedMilliseconds =  stopwatchs[sessionId].ElapsedMilliseconds;
-                var eventsToSend = mirroringEvents.Where(x => (x.timestamp <= elapsedMilliseconds) && (x.timestamp > startingTime))
+                var elapsedMilliseconds = stopwatch[sessionId].ElapsedMilliseconds + addedTime[sessionId];
+                var eventsToSend = mirroringEventsDic[sessionId].Where(x => (x.timestamp <= elapsedMilliseconds) && (x.timestamp > elapsedTime[sessionId]))
                     .OrderBy(p=>p.timestamp).ToList();
                 foreach (ScreenMirroringEvent screenMirroringEvent in eventsToSend)
                 {
                     if (screenMirroringEvent.GetType() == typeof(DomEvent))
-                            hubContext.Clients.Group(sessionId).SendAsync("sentDom",((DomEvent)screenMirroringEvent).content);
+                          hubContext.Clients.Group(sessionId).SendAsync("sentDom",((DomEvent)screenMirroringEvent).content);
                     else if(screenMirroringEvent.GetType() == typeof(MousePosition))
-                            hubContext.Clients.Group(sessionId).SendAsync("sentMousePosition",((MousePosition)screenMirroringEvent).left,((MousePosition)screenMirroringEvent).top);
+                          hubContext.Clients.Group(sessionId).SendAsync("sentMousePosition",((MousePosition)screenMirroringEvent).left,((MousePosition)screenMirroringEvent).top);
                     else
-                            hubContext.Clients.Group(sessionId).SendAsync("sentScroll",((ScrollPosition)screenMirroringEvent).vertical);
-                    sentEvents++;
+                          hubContext.Clients.Group(sessionId).SendAsync("sentScroll",((ScrollPosition)screenMirroringEvent).vertical);
                 }
 
-                startingTime = elapsedMilliseconds;
+                elapsedTime[sessionId] = elapsedMilliseconds;
+                // send 60 fps
                 System.Threading.Thread.Sleep(17);
-                
             }
+        }
 
+
+        public void  startSessionReply(string sessionId)
+        {
+            isReplying[sessionId] = false;
+                    elapsedTime[sessionId] = 0;
+                    addedTime[sessionId] = 0;
+                    mirroringEventsDic[sessionId] =
+                        screenMirroringRepository.GetAllScreenMirroringEventsSortedByTimestamp(sessionId);
+                    stopwatch[sessionId] = new Stopwatch();
+
+        }
+
+
+
+        public void  pauseSessionReply(string sessionId)
+        {
+            isReplying[sessionId] = false;
+            stopwatch[sessionId].Stop();
+        }
+
+        public async Task continueSessionReply(string sessionId)
+        {
+            stopwatch[sessionId].Start();
+            await Task.Run(() => performMirroring(sessionId));
+        }
+
+        public async Task replyFromTimestamp(string sessionId, long timestamp)
+        {
+            isReplying[sessionId] = false;
+            
+            //send clear page
+            await hubContext.Clients.Group(sessionId).SendAsync("sentDom","{'clear':'clear'}");
+            
+            // deal with timers
+            addedTime[sessionId] = timestamp;
+            stopwatch[sessionId].Restart();
+            elapsedTime[sessionId] = 0;
+            
+            
+            // basic solution for now
+            /*performMirroring(sessionId);*/
+            
+            
+            
+            
+            //much better solution
+            
+            // send just the latest mouse position and scroll position
+            
+            // send clear page
+            
+
+            // send all dom events from beginning or from the last initialize
         }
 
         public void stopSessionReply(string sessionId)
         {
-            throw new System.NotImplementedException();
+            isReplying[sessionId] = false;
+            stopwatch[sessionId].Stop();
+            //more logic
         }
-
-        public void pauseSessionReply(string sessionId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void continueSessionReply(string sessionId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void replyFromTimestamp(string sessionId, long timestamp)
-        {
-            throw new System.NotImplementedException();
-        }
+    
     }
 }

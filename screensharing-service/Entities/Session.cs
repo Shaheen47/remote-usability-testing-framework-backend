@@ -6,5 +6,7 @@ namespace screensharing_service.Entities
         public string hubUrl { get; set; }
         
         public string replyHubUrl { get; set; }
+        
+        public string replyControllingHubUrl { get; set; }
     }
 }

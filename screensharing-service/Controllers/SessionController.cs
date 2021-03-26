@@ -50,7 +50,7 @@ namespace screensharing_service.Controllers
         
         
         
-        [HttpPost]
+        /*[HttpPost]
         [Route("reply-session")]
         public async Task<IActionResult> replySession([FromBody] SessionLoginDto loginDto)
         {
@@ -59,7 +59,7 @@ namespace screensharing_service.Controllers
             //reply
            screenEventsReplyService.startSessionReply(loginDto.sessionId);
             return Ok("session");
-        }
+        }*/
         
     }
 }

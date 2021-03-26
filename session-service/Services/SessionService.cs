@@ -74,6 +74,7 @@ namespace session_service.Services
             session.screenSharingHubUrl = screensharingSession.hubUrl;
             session.screenSharingSessionId = screensharingSession.sessionId;
             session.screenSharingReplyHubUrl = screensharingSession.replyHubUrl;
+            session.screenSharingReplyControllingHubUrl = screensharingSession.replyControllingHubUrl;
             
             // store 
             session=await sessionRepository.Create(session);
