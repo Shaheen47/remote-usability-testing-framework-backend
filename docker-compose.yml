@@ -58,5 +58,12 @@ services:
       - "4443:4443"
     environment:
       - OPENVIDU_SECRET=MY_SECRET
+      - OPENVIDU_RECORDING=true
+      - OPENVIDU_RECORDING_PATH=/home/fakhr/Desktop/openViduVideos
+      - OPENVIDU_RECORDING_PUBLIC_ACCESS=true
+      
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/fakhr/Desktop/openViduVideos:/home/fakhr/Desktop/openViduVideos
     logging:
       driver: none

@@ -10,6 +10,8 @@ namespace session_service.Proxies
 {
     public class ScreensharingServiceProxy: IScreensharingServiceProxy
     {
+        /*private string urlBase = "http://screensharing-service:80/";*/
+        private string urlbase = "https://localhost:5005/";
         
         public async Task<ScreensharingSession> createSession()
         {
@@ -17,8 +19,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            /*String api ="http://screensharing-service:80/Session/create-session";*/
-            String api ="https://localhost:5005/Session/create-session";
+            String api =urlBase+"Session/create-session";
             StringContent content =
                 new StringContent(("{}"), Encoding.UTF8, "application/json");
             var response = await client.PostAsync( api, content);
@@ -33,8 +34,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            /*String api ="http://screensharing-service:80/Session/create-session";*/
-            String api ="https://localhost:5005/Session/create-session-with-recording";
+            String api =urlBase+"Session/create-session-with-recording";
             StringContent content =
                 new StringContent(("{}"), Encoding.UTF8, "application/json");
             var response = await client.PostAsync( api, content);
@@ -48,8 +48,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            /*String api ="http://screensharing-service:80/Session/create-session";*/
-            String api ="https://localhost:5005/Session/stop-session"+sessionId;
+            String api =urlBase+"Session/stop-session"+sessionId;
             var response = await client.DeleteAsync( api);
             var responeContent = await response.Content.ReadAsStringAsync();
         }
@@ -60,8 +59,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            /*String api ="http://screensharing-service:80/Session/create-session";*/
-            String api ="https://localhost:5005/Session/reply-session";
+            String api =urlBase+"Session/reply-session";
             SessionLoginDto loginDto = new SessionLoginDto();
             loginDto.sessionId = sessionId;
             StringContent content =
