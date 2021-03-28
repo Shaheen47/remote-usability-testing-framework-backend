@@ -15,5 +15,9 @@ namespace screensharing_service.Hubs
         public Task sendMousePosition(string sessionId, int x, int y);
 
         public Task sendScroll(string sessionId, int vertical);
+
+        public Task mouseUp(string sessionId);
+
+        public Task mouseDown(string sessionId);
     }
 }

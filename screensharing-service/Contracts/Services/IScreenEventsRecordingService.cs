@@ -14,5 +14,9 @@ namespace screensharing_service.Contracts.Services
         public void addMousemovementEvent(int x, int y,string sessionId);
 
         public void addScrollingEvent(int vertical, string sessionId);
+
+        public void addMouseUpEvent(string sessionId);
+        
+        public void addMouseDownEvent(string sessionId);
     }
 }

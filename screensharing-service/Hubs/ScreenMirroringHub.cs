@@ -38,5 +38,15 @@ namespace screensharing_service.Hubs
         {
             await Clients.OthersInGroup(sessionId).SendAsync("sentScroll",vertical);
         }
+
+        public async Task mouseUp(string sessionId)
+        {
+            await Clients.OthersInGroup(sessionId).SendAsync("mouseUp");
+        }
+
+        public async Task mouseDown(string sessionId)
+        {
+            await Clients.OthersInGroup(sessionId).SendAsync("mouseDown");
+        }
     }
 }

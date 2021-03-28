@@ -61,5 +61,19 @@ namespace screensharing_service.Services
             scrollPosition.timestamp = stopWatches[sessionId].ElapsedMilliseconds;
             screenMirroringRepository.addScrollingEvent(scrollPosition,sessionId);
         }
+
+        public void addMouseUpEvent(string sessionId)
+        {
+            MouseUpEvent mouseUpEvent = new MouseUpEvent();
+            mouseUpEvent.timestamp= stopWatches[sessionId].ElapsedMilliseconds;
+            screenMirroringRepository.addMouseUpEvent(mouseUpEvent,sessionId);
+        }
+
+        public void addMouseDownEvent(string sessionId)
+        {
+            MouseDownEvent mouseDownEvent = new MouseDownEvent();
+            mouseDownEvent.timestamp= stopWatches[sessionId].ElapsedMilliseconds;
+            screenMirroringRepository.addMouseDownEvent(mouseDownEvent,sessionId);
+        }
     }
 }

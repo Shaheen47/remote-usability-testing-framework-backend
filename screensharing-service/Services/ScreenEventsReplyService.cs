@@ -53,6 +53,10 @@ namespace screensharing_service.Services
                           hubContext.Clients.Group(sessionId).SendAsync("sentDom",((DomEvent)screenMirroringEvent).content);
                     else if(screenMirroringEvent.GetType() == typeof(MousePosition))
                           hubContext.Clients.Group(sessionId).SendAsync("sentMousePosition",((MousePosition)screenMirroringEvent).left,((MousePosition)screenMirroringEvent).top);
+                    else if (screenMirroringEvent.GetType() == typeof(MouseUpEvent))
+                        hubContext.Clients.Group(sessionId).SendAsync("mouseUp");
+                    else if (screenMirroringEvent.GetType() == typeof(MouseDownEvent))
+                        hubContext.Clients.Group(sessionId).SendAsync("mouseDown");
                     else
                           hubContext.Clients.Group(sessionId).SendAsync("sentScroll",((ScrollPosition)screenMirroringEvent).vertical);
                 }

@@ -14,6 +14,10 @@ namespace screensharing_service.Contracts.Repositories
 
         public void addScrollingEvent(ScrollPosition scrollPosition, string sessionId);
         
+        public void addMouseUpEvent(MouseUpEvent mouseUpEvent,string sessionId);
+        
+        public void addMouseDownEvent(MouseDownEvent mouseDownEvent,string sessionId);
+        
         public IList<ScreenMirroringEvent> GetAllScreenMirroringEventsSortedByTimestamp(string sessionId);
     }
 }

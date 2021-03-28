@@ -56,5 +56,17 @@ namespace screensharing_service.Hubs
             await Clients.OthersInGroup(sessionId).SendAsync("sentScroll",vertical);
             screenEventsRecordingService.addScrollingEvent(vertical,sessionId);
         }
+
+        public async Task mouseUp(string sessionId)
+        {
+             await Clients.OthersInGroup(sessionId).SendAsync("mouseUp");
+             screenEventsRecordingService.addMouseUpEvent(sessionId);
+        }
+
+        public async Task mouseDown(string sessionId)
+        {
+            await Clients.OthersInGroup(sessionId).SendAsync("mouseDown");
+            screenEventsRecordingService.addMouseDownEvent(sessionId);
+        }
     }
 }

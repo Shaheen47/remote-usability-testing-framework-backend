@@ -14,7 +14,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_Kestrel__Certificates__Default__Password=12345678
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/rutf.pfx
     volumes:
       - ~/.aspnet/https:/https:ro
         
@@ -29,7 +29,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_Kestrel__Certificates__Default__Password=12345678
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/rutf.pfx
     volumes:
       - ~/.aspnet/https:/https:ro
 
@@ -41,29 +41,11 @@ services:
     ports:
       - 5003:443
       - 5002:80
-    depends_on:
-      - openVidu
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_Kestrel__Certificates__Default__Password=12345678
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/rutf.pfx
     volumes:
       - ~/.aspnet/https:/https:ro
-        
-  openVidu:
-    image: openvidu/openvidu-server-kms:2.17.0
-    container_name: openvidu-app
-    ports:
-      - "4443:4443"
-    environment:
-      - OPENVIDU_SECRET=MY_SECRET
-      - OPENVIDU_RECORDING=true
-      - OPENVIDU_RECORDING_PATH=/home/fakhr/Desktop/openViduVideos
-      - OPENVIDU_RECORDING_PUBLIC_ACCESS=true
       
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /home/fakhr/Desktop/openViduVideos:/home/fakhr/Desktop/openViduVideos
-    logging:
-      driver: none

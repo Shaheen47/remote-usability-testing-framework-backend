@@ -36,6 +36,16 @@ namespace screensharing_service.Repositories
             domStore[sessionId].Add(scrollPosition);
         }
 
+        public void addMouseUpEvent(MouseUpEvent mouseUpEvent, string sessionId)
+        {
+            domStore[sessionId].Add(mouseUpEvent);
+        }
+
+        public void addMouseDownEvent(MouseDownEvent mouseDownEvent, string sessionId)
+        {
+            domStore[sessionId].Add(mouseDownEvent);
+        }
+
         public IList<ScreenMirroringEvent> GetAllScreenMirroringEventsSortedByTimestamp(string sessionId)
         {
             return domStore[sessionId].OrderBy(p=>p.timestamp).ToList();
