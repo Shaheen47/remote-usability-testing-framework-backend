@@ -19,6 +19,9 @@ namespace session_service.Services
         
         private readonly IMapper Mapper;
 
+        private const string chatHubBaseUrl = "https://localhost:5001/";
+        /*private const string chatHubBaseUrl = "https://18.185.136.179/";*/
+
         public SessionService(ISessionRepository sessionRepository, IChatRepository chatRepository, IVideoConferencingServiceProxy conferencingServiceProxy,IScreensharingServiceProxy screensharingServiceProxy, IMapper Mapper)
         {
             this.sessionRepository = sessionRepository;
@@ -36,8 +39,8 @@ namespace session_service.Services
             //create chat session
             Chat chat=chatRepository.createChat(new Chat());
             session.chatSessionId = chat.id;
-            session.chatHubUrl = "https://localhost:5001/ChatHub";
-            
+            session.chatHubUrl =chatHubBaseUrl+ "ChatHub";
+
             //create videoconference session by communicating with the VideoConferencingService
             session.videoConferencingSessionId=await conferencingServiceProxy.createSession();
             
@@ -64,7 +67,7 @@ namespace session_service.Services
             //create chat session
             Chat chat=chatRepository.createChat(new Chat());
             session.chatSessionId = chat.id;
-            session.chatHubUrl = "https://localhost:5001/ChatHubWithRecording";
+            session.chatHubUrl = chatHubBaseUrl+"ChatHubWithRecording";
             
             //create videoconference session by communicating with the VideoConferencingService
             session.videoConferencingSessionId=await conferencingServiceProxy.createSession();

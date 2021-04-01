@@ -8,6 +8,9 @@ namespace screensharing_service.Services
     public class SessionService: ISessionService
     {
         private ISessionRepository sessionRepository;
+        
+        private const string hubBaseUrl="https://localhost:5005/";
+        //private const hubBaseUrl="https://18.184.14.204:5005/";
 
         public SessionService(ISessionRepository sessionRepository)
         {
@@ -17,7 +20,7 @@ namespace screensharing_service.Services
         public async Task<Session> createSession()
         {
             Session session = new Session();
-            session.hubUrl = "https://localhost:5005/ScreenMirroringHub";
+            session.hubUrl =hubBaseUrl+ "ScreenMirroringHub";
             var createdSession=sessionRepository.createSession(session);
             return createdSession;
         }
@@ -32,9 +35,9 @@ namespace screensharing_service.Services
         public async Task<Session> createSessionWithRecording()
         {
             Session session = new Session();
-            session.hubUrl = "https://localhost:5005/ScreenMirroringHubWithRecording";
-            session.replyHubUrl = "https://localhost:5005/ScreenMirroringHub";
-            session.replyControllingHubUrl = "https://localhost:5005/ScreenMirroringReplyControllingHub";
+            session.hubUrl =hubBaseUrl+ "ScreenMirroringHubWithRecording";
+            session.replyHubUrl =hubBaseUrl+ "ScreenMirroringHub";
+            session.replyControllingHubUrl =hubBaseUrl+ "ScreenMirroringReplyControllingHub";
             var createdSession=sessionRepository.createSession(session);
             return createdSession;
         }
