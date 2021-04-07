@@ -60,10 +60,11 @@ namespace screensharing_service.Repositories
         public async Task<IEnumerable<ScreenMirroringEvent>> getAllEvents(string sessionId, EventType eventType)
         {
             var discriminatorFieldDefinition = new StringFieldDefinition<ScreenMirroringEvent, string>("_t");
+            var f1 = new StringFieldDefinition<ScreenMirroringEvent, string>("_t");
             
             var filter = Builders<ScreenReplySession>.Filter.Eq(e => e.sessionId, sessionId)
                          & Builders<ScreenReplySession>.Filter.ElemMatch(e =>e.events, Builders<ScreenMirroringEvent>
-                             .Filter.Eq(discriminatorFieldDefinition,"fd"));
+                             .Filter.OfType<DomEvent>());
             var session= await screenReplySessionContext.sessions.FindAsync(filter);
             return session.FirstOrDefault().events;
         }
