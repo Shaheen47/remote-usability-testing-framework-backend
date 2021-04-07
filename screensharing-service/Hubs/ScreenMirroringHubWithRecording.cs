@@ -68,5 +68,23 @@ namespace screensharing_service.Hubs
             await Clients.OthersInGroup(sessionId).SendAsync("mouseDown");
             screenEventsRecordingService.addMouseDownEvent(sessionId);
         }
+
+        public async Task mouseOver(string sessionId, string elementXpath)
+        {
+            await Clients.OthersInGroup(sessionId).SendAsync("mouseOver",elementXpath);
+            screenEventsRecordingService.addMouseOverEvent(sessionId,elementXpath);
+        }
+
+        public async Task mouseOut(string sessionId, string elementXpath)
+        {
+            await Clients.OthersInGroup(sessionId).SendAsync("mouseOut",elementXpath);
+            screenEventsRecordingService.addMouseOverEvent(sessionId,elementXpath);
+        }
+
+        public async Task inputChanged(string sessionId, string elementXpath, string inputContent)
+        {
+            await Clients.OthersInGroup(sessionId).SendAsync("inputChanged",elementXpath,inputContent);
+            screenEventsRecordingService.addInputChangedEvent(sessionId,elementXpath,inputContent);
+        }
     }
 }

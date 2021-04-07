@@ -19,5 +19,11 @@ namespace screensharing_service.Hubs
         public Task mouseUp(string sessionId);
 
         public Task mouseDown(string sessionId);
+
+        public Task mouseOver(string sessionId, string elementXpath);
+        
+        public Task mouseOut(string sessionId, string elementXpath);
+        
+        public Task inputChanged(string sessionId, string elementXpath,string inputContent);
     }
 }

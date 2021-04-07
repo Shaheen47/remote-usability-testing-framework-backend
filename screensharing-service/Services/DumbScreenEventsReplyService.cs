@@ -11,8 +11,9 @@ using screensharing_service.Hubs;
 
 namespace screensharing_service.Services
 {
-    public class ScreenEventsReplyService: IScreenEventsReplyService
+    public class DumbScreenEventsReplyService:IScreenEventsReplyService
     {
+        
         private IScreenMirroringRepository screenMirroringRepository;
         private IHubContext<ScreenMirroringHub> hubContext;
         private Dictionary<string, IEnumerable<ScreenMirroringEvent>> mirroringEventsDic;
@@ -24,7 +25,8 @@ namespace screensharing_service.Services
         // we need some sort of added time to deal with replyFromTimestamp
         private ConcurrentDictionary<string, long> addedTime;
         
-        public ScreenEventsReplyService(IScreenMirroringRepository screenMirroringRepository,IHubContext<ScreenMirroringHub> hubContext)
+        
+        public DumbScreenEventsReplyService(IScreenMirroringRepository screenMirroringRepository,IHubContext<ScreenMirroringHub> hubContext)
         {
             this.screenMirroringRepository = screenMirroringRepository;
             this.hubContext =hubContext;
@@ -55,6 +57,12 @@ namespace screensharing_service.Services
                         hubContext.Clients.Group(sessionId).SendAsync("mouseUp");
                     else if (screenMirroringEvent.GetType() == typeof(MouseDownEvent))
                         hubContext.Clients.Group(sessionId).SendAsync("mouseDown");
+                    else if (screenMirroringEvent.GetType() == typeof(MouseOverEvent))
+                        hubContext.Clients.Group(sessionId).SendAsync("mouseOver",((MouseOverEvent)screenMirroringEvent).elementXpath);
+                    else if (screenMirroringEvent.GetType() == typeof(MouseOutEvent))
+                        hubContext.Clients.Group(sessionId).SendAsync("mouseOut",((MouseOutEvent)screenMirroringEvent).elementXpath);
+                    else if (screenMirroringEvent.GetType() == typeof(InputChangedEvent))
+                        hubContext.Clients.Group(sessionId).SendAsync("inputChanged",((InputChangedEvent)screenMirroringEvent).elementXpath,((InputChangedEvent)screenMirroringEvent).content);
                     else
                           hubContext.Clients.Group(sessionId).SendAsync("sentScroll",((ScrollPosition)screenMirroringEvent).vertical);
                 }
@@ -125,5 +133,6 @@ namespace screensharing_service.Services
             stopwatch[sessionId].Stop();
             //more logic
         }
+    
     }
 }

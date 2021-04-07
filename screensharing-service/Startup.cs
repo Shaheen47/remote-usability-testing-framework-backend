@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using screensharing_service.Contracts.Repositories;
 using screensharing_service.Contracts.Services;
+using screensharing_service.Data;
 using screensharing_service.Hubs;
 using screensharing_service.Mappings;
 using screensharing_service.Repositories;
@@ -43,12 +44,14 @@ namespace screensharing_service
                 o.MaximumReceiveMessageSize = null;
             });
             services.AddSingleton<ISessionService, SessionService>();
-            services.AddSingleton<IScreenMirroringRepository, DumbScreenMirroringRepository>();
+            services.AddSingleton<IScreenMirroringRepository, ScreenMirroringRepository>();
             
             services.AddSingleton<IScreenEventsRecordingService, ScreenEventsRecordingService>();
-            services.AddSingleton<IScreenEventsReplyService, ScreenEventsReplyService>();
+            services.AddSingleton<IScreenEventsReplyService, DumbScreenEventsReplyService>();
             
             services.AddSingleton<ISessionRepository, SessionRepository>();
+
+            services.AddSingleton<IScreenReplySessionContext, ScreenReplySessionContext>();
 
         }
 

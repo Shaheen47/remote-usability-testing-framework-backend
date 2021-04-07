@@ -1,9 +1,14 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace screensharing_service.Entities.ScreenMirroring
 {
+    [BsonDiscriminator(RootClass = true)]
+    [BsonKnownTypes(typeof(DomEvent),typeof(InputChangedEvent),typeof(ScrollPosition),typeof(MouseOverEvent),typeof(MouseOutEvent),typeof(MousePosition),typeof(MouseUpEvent),typeof(MouseDownEvent))]
     public class ScreenMirroringEvent
     {
-        public string id { get; set; }
+        [BsonRepresentation(BsonType.Double)]
+        public double timestamp { get; set; }
         
-        public long timestamp { get; set; }
     }
 }
