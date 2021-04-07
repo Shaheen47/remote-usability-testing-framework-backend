@@ -38,7 +38,7 @@ namespace screensharing_service.Repositories
             await screenReplySessionContext.sessions.FindOneAndUpdateAsync(filter, update);
 
         }
-
+        
         public async Task<IEnumerable<ScreenMirroringEvent>> getAllEvents(string sessionId)
         {
             var session= await screenReplySessionContext.sessions
@@ -46,55 +46,55 @@ namespace screensharing_service.Repositories
                 .FirstOrDefaultAsync();
             return session.events;
         }
-
-        public async Task<IEnumerable<ScreenMirroringEvent>> getAllEvents(string sessionId, long startTime, long stopTime)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<IEnumerable<ScreenMirroringEvent>> getAllEvents(string sessionId, long startTime, long stopTime, EventType eventType)
-        {
-            throw new System.NotImplementedException();
-        }
-
+        
         public async Task<IEnumerable<ScreenMirroringEvent>> getAllEvents(string sessionId, EventType eventType)
         {
-            var discriminatorFieldDefinition = new StringFieldDefinition<ScreenMirroringEvent, string>("_t");
-            var f1 = new StringFieldDefinition<ScreenMirroringEvent, string>("_t");
-            
-            var filter = Builders<ScreenReplySession>.Filter.Eq(e => e.sessionId, sessionId)
-                         & Builders<ScreenReplySession>.Filter.ElemMatch(e =>e.events, Builders<ScreenMirroringEvent>
-                             .Filter.OfType<DomEvent>());
+            var filter = Builders<ScreenReplySession>.Filter.Eq(e => e.sessionId, sessionId);
             var session= await screenReplySessionContext.sessions.FindAsync(filter);
-            return session.FirstOrDefault().events;
+            //ToDo return the required results immediatly from the database
+            switch (eventType)
+            {
+                case EventType.dom:
+                    return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(DomEvent));
+                case EventType.scroll:
+                    return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(ScrollPosition));
+                case EventType.inputChanged:
+                    return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(InputChangedEvent));
+                case EventType.mouseDown:
+                    return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(MouseDownEvent));
+                case EventType.mouseOut:
+                    return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(MouseOutEvent));
+                case EventType.mouseOver:
+                    return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(MouseOverEvent));
+                default:
+                    return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(MouseUpEvent));
+            }
+            
+            
         }
 
         public async Task<IEnumerable<ScreenMirroringEvent>> getAllEventsStartingFrom(string sessionId, long startTime)
         {
-            var filter = Builders<ScreenReplySession>.Filter.Eq(e => e.sessionId, sessionId)
-                         & Builders<ScreenReplySession>.Filter.ElemMatch(e =>e.events, Builders<ScreenMirroringEvent>
-                             .Filter.Gte(e=>e.timestamp,startTime));
-            var session= await screenReplySessionContext.sessions.FindAsync(filter);
-            return session.FirstOrDefault().events;
+            var events = await getAllEvents(sessionId);
+            return events.AsQueryable().Where(e => e.timestamp >= startTime);
         }
 
-        public Task<IEnumerable<ScreenMirroringEvent>> getAllEventsStartingFrom(string sessionId, long startTime, EventType eventType)
+        public async Task<IEnumerable<ScreenMirroringEvent>> getAllEventsStartingFrom(string sessionId, long startTime, EventType eventType)
         {
-            throw new System.NotImplementedException();
+            var events = await getAllEvents(sessionId,eventType);
+            return events.AsQueryable().Where(e => e.timestamp >= startTime);
         }
 
         public async Task<IEnumerable<ScreenMirroringEvent>> getAllEventsUntil(string sessionId, long stopTime)
         {
-            var filter = Builders<ScreenReplySession>.Filter.Eq(e => e.sessionId, sessionId)
-                         & Builders<ScreenReplySession>.Filter.ElemMatch(e =>e.events, Builders<ScreenMirroringEvent>
-                             .Filter.Lte(e=>e.timestamp,stopTime));
-            var session= await screenReplySessionContext.sessions.FindAsync(filter);
-            return session.FirstOrDefault().events;
+            var events = await getAllEvents(sessionId);
+            return events.AsQueryable().Where(e => e.timestamp <= stopTime);
         }
 
-        public Task<IEnumerable<ScreenMirroringEvent>> getAllEventsUntil(string sessionId, long stopTime, EventType eventType)
+        public async Task<IEnumerable<ScreenMirroringEvent>> getAllEventsUntil(string sessionId, long stopTime, EventType eventType)
         {
-            throw new System.NotImplementedException();
+            var events = await getAllEvents(sessionId,eventType);
+            return events.AsQueryable().Where(e => e.timestamp <= stopTime);
         }
     }
 }
