@@ -1,11 +1,13 @@
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.SignalR;
 using session_service.Contracts.Proxies;
 using session_service.Contracts.Repositories;
 using session_service.Contracts.Services;
 using session_service.Core.Exceptions;
 using session_service.Dtos;
 using session_service.Entities;
+using session_service.Hubs;
 using session_service.Proxies;
 
 namespace session_service.Services
@@ -16,19 +18,23 @@ namespace session_service.Services
         private IChatRepository chatRepository;
         private IVideoConferencingServiceProxy conferencingServiceProxy;
         private IScreensharingServiceProxy screensharingServiceProxy;
-        
+        private IHubContext<ChatHub> chatHubContext;
+        private IHubContext<ChatHubWithRecording> chatHubWithRecordingContext;
         private readonly IMapper Mapper;
 
         private const string chatHubBaseUrl = "https://localhost:5001/";
         /*private const string chatHubBaseUrl = "https://18.185.136.179/";*/
 
-        public SessionService(ISessionRepository sessionRepository, IChatRepository chatRepository, IVideoConferencingServiceProxy conferencingServiceProxy,IScreensharingServiceProxy screensharingServiceProxy, IMapper Mapper)
+        public SessionService(ISessionRepository sessionRepository, IChatRepository chatRepository, IVideoConferencingServiceProxy conferencingServiceProxy,
+            IScreensharingServiceProxy screensharingServiceProxy, IMapper Mapper,IHubContext<ChatHub> chatHubContext,IHubContext<ChatHubWithRecording> chatHubWithRecordingContext)
         {
             this.sessionRepository = sessionRepository;
             this.chatRepository = chatRepository;
             this.conferencingServiceProxy = conferencingServiceProxy;
             this.screensharingServiceProxy = screensharingServiceProxy;
             this.Mapper = Mapper;
+            this.chatHubContext = chatHubContext;
+            this.chatHubWithRecordingContext = chatHubWithRecordingContext;
         }
 
         public async Task<SessionCreationResponseDto> createSession()
@@ -49,8 +55,12 @@ namespace session_service.Services
             session.screenSharingHubUrl = screensharingSession.hubUrl;
             session.screenSharingSessionId = screensharingSession.sessionId;
             
-            // store 
+            
+            
             session=await sessionRepository.Create(session);
+            // set status as created
+            session.status = SessionStatus.CREATED;
+            // store 
             await sessionRepository.Save();
 
             //return 
@@ -93,21 +103,29 @@ namespace session_service.Services
         public async Task stopSession(Session session)
         {
             
-            //stop session and chat
-            
-            
-            
+            //stop chat
+            if(session.isRecorded) 
+                await chatHubWithRecordingContext.Clients.Group(session.chatSessionId).SendAsync("deleteSession",session.chatSessionId);
+            else
+                await chatHubContext.Clients.Group(session.chatSessionId).SendAsync("deleteSession",session.chatSessionId);
+
+
             //stop video recording and get the url
             if(session.isRecorded) 
                 session.videoRecordingUrl=await conferencingServiceProxy.stopRecording(session.videoConferencingSessionId);
 
             //stop video session
-            conferencingServiceProxy.stopSession(session.videoConferencingSessionId);
+            await conferencingServiceProxy.stopSession(session.videoConferencingSessionId);
             
             //stop screensharing session
-            screensharingServiceProxy.stopSession(session.screenSharingSessionId);
+            await screensharingServiceProxy.stopSession(session.screenSharingSessionId);
             
+            //stop session 
+            session.status = SessionStatus.FINISHED;
 
+            //save
+            await sessionRepository.Update(session);
+            await sessionRepository.Save();
             
         }
 
@@ -144,6 +162,9 @@ namespace session_service.Services
             if (session.isRecorded == true)
                 await conferencingServiceProxy.startRecording(session.videoConferencingSessionId);
             
+            // set session as started 
+            session.status = SessionStatus.STARTED;
+            
             //save
             await sessionRepository.Update(session);
             await sessionRepository.Save();
@@ -175,12 +196,7 @@ namespace session_service.Services
             return session;
         }
         
-
-        public string getRecordingUrl(Session session)
-        {
-            throw new System.NotImplementedException();
-        }
-
+        
         public void replyScreensharing(Session session)
         {
             screensharingServiceProxy.replySession(session.screenSharingSessionId);

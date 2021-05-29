@@ -38,6 +38,8 @@ namespace session_service.Entities
         public IList<string> observersConferencingTokens { get; set; }
         
         public string videoRecordingUrl { get; set; }
-        
+
+        public SessionStatus status { get; set; }
+
     }
 }

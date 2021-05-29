@@ -5,16 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88d57cba-8c11-411a-93a2-75abcc95da1a" name="Default Changelist" comment="integration">
-      <change afterPath="$PROJECT_DIR$/../screensharing-service/Entities/ScreenMirroring/InputChangedEvent.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../screensharing-service/Entities/ScreenMirroring/MouseOutEvent.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../screensharing-service/Entities/ScreenMirroring/MouseOverEvent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../screensharing-service/Entities/ScreenMirroring/InitialDom.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../screensharing-service/Entities/ScreenMirroring/MousePosition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../screensharing-service/Entities/ScreenMirroring/MousePositionChangeEvent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../screensharing-service/Entities/ScreenMirroring/ScrollPosition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../screensharing-service/Entities/ScreenMirroring/ScrollEvent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../screensharing-service/Hubs/IScreenMirroringHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../screensharing-service/Hubs/IScreenMirroringHub.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../screensharing-service/Hubs/ScreenMirroringHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../screensharing-service/Hubs/ScreenMirroringHub.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../screensharing-service/Hubs/ScreenMirroringHubWithRecording.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../screensharing-service/Hubs/ScreenMirroringHubWithRecording.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../session-service/Entities/SessionStatus.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../session-service/Contracts/Repositories/ISessionRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Contracts/Repositories/ISessionRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../session-service/Contracts/Services/ISessionService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Contracts/Services/ISessionService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../session-service/Controllers/SessionController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Controllers/SessionController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../session-service/Entities/Session.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Entities/Session.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../session-service/Hubs/ChatHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Hubs/ChatHub.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../session-service/Hubs/ChatHubWithRecording.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Hubs/ChatHubWithRecording.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../session-service/Hubs/IChatHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Hubs/IChatHub.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../session-service/Services/SessionService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Services/SessionService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.videoconferencing-service/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.videoconferencing-service/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -142,6 +141,8 @@
       <workItem from="1617292555086" duration="727000" />
       <workItem from="1617351920574" duration="899000" />
       <workItem from="1617438303786" duration="1218000" />
+      <workItem from="1619609078799" duration="922000" />
+      <workItem from="1622284817476" duration="1270000" />
     </task>
     <task id="LOCAL-00001" summary="project import">
       <created>1616063601544</created>

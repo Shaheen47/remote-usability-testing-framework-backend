@@ -53,16 +53,7 @@ namespace session_service.Controllers
             var session =await sessionService.getSession(sessionId);
             return Ok(session);
         }
-        
-        /*[HttpGet("{sessionId}")]
-        public async Task<IActionResult> getAllModeratorSessions(string sessionId,[FromBody] ModeratorLoginDto loginDto )
-        {
-            var moderator=await moderatorService.getModerator(loginDto.id);
-            var sessions = moderator.sessions;
-            return Ok(sessions);
-        }*/
-        
-        
+
         
         
         [HttpPost]
@@ -106,24 +97,6 @@ namespace session_service.Controllers
             return Created("observer",sessionObserverDto);
         }
         
-        
-        /*[HttpGet]
-        [Route("get-recording-url")]
-        public async Task<IActionResult> getRecordingUrl([FromBody] SessionLoginDto loginDto)
-        {
-            var session = await sessionService.getSession(loginDto.sessionId);
-            var url = sessionService.getRecordingUrl(session);
-            return Ok(url);
-        }*/
-        
-        /*[HttpPost]
-        [Route("reply-screensharing")]
-        public async Task<IActionResult> replySession([FromBody] SessionLoginDto loginDto)
-        {
-            Session session = await sessionService.getSession(loginDto.sessionId);
-            sessionService.replyScreensharing(session);
-            return Ok();
-        }*/
         
         
     }

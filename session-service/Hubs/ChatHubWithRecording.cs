@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using session_service.Contracts.Services;
@@ -9,17 +11,30 @@ namespace session_service.Hubs
     public class ChatHubWithRecording : Hub,IChatHub
     {
         private IChatService chatService;
+        private ConcurrentDictionary<string, IList<string>> activeSessions;
 
         public ChatHubWithRecording(IChatService chatService)
         {
             this.chatService = chatService;
+            activeSessions = new ConcurrentDictionary<string, IList<string>>();
+        }
+
+        public bool createSession(string chatSessionId)
+        {
+            if (activeSessions.ContainsKey(chatSessionId))
+                return false;
+            else
+            {
+                activeSessions.TryAdd(chatSessionId, new List<string>());
+                return true;
+            }
         }
 
         public async Task joinSession(string chatSessionId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, chatSessionId);
-            //
             await Clients.Group(chatSessionId).SendAsync("userJoined", $"{Context.ConnectionId} has joined the group {chatSessionId}.");
+            activeSessions[chatSessionId].Add(Context.ConnectionId);
         }
         
         public async Task leaveSession(string chatSessionId)
@@ -35,6 +50,22 @@ namespace session_service.Hubs
             
             ChatMessage chatMessage = new ChatMessage(senderName,message,DateTime.Now);
             chatService.addMessage(chatSessionId,chatMessage);
+        }
+
+        public bool deleteSession(string chatSessionId)
+        {
+            if (activeSessions.ContainsKey(chatSessionId))
+                return false;
+            else
+            {
+                activeSessions.TryRemove(chatSessionId, out var sessionConnections);
+                foreach (string connection in sessionConnections)
+                {
+                    Groups.RemoveFromGroupAsync(connection, chatSessionId);
+                }
+
+                return true;
+            }
         }
     }
 }
