@@ -4,16 +4,14 @@
     <projectFile>videoconferencing-service.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88d57cba-8c11-411a-93a2-75abcc95da1a" name="Default Changelist" comment="integration">
-      <change afterPath="$PROJECT_DIR$/../session-service/Entities/SessionStatus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../session-service/Contracts/Repositories/ISessionRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Contracts/Repositories/ISessionRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../session-service/Contracts/Services/ISessionService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Contracts/Services/ISessionService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../session-service/Controllers/SessionController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Controllers/SessionController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../session-service/Entities/Session.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Entities/Session.cs" afterDir="false" />
+    <list default="true" id="88d57cba-8c11-411a-93a2-75abcc95da1a" name="Default Changelist" comment="stop session on session service">
+      <change beforePath="$PROJECT_DIR$/../screensharing-service/Hubs/IScreenMirroringHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../screensharing-service/Hubs/IScreenMirroringHub.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../screensharing-service/Hubs/ScreenMirroringHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../screensharing-service/Hubs/ScreenMirroringHub.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../screensharing-service/Hubs/ScreenMirroringHubWithRecording.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../screensharing-service/Hubs/ScreenMirroringHubWithRecording.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../screensharing-service/Hubs/ScreenMirroringReplyControllingHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../screensharing-service/Hubs/ScreenMirroringReplyControllingHub.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../session-service/Hubs/ChatHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Hubs/ChatHub.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../session-service/Hubs/ChatHubWithRecording.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Hubs/ChatHubWithRecording.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../session-service/Hubs/IChatHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Hubs/IChatHub.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../session-service/Services/SessionService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Services/SessionService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.videoconferencing-service/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.videoconferencing-service/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -142,7 +140,9 @@
       <workItem from="1617351920574" duration="899000" />
       <workItem from="1617438303786" duration="1218000" />
       <workItem from="1619609078799" duration="922000" />
-      <workItem from="1622284817476" duration="1270000" />
+      <workItem from="1622284817476" duration="1397000" />
+      <workItem from="1622300865105" duration="608000" />
+      <workItem from="1622362590491" duration="545000" />
     </task>
     <task id="LOCAL-00001" summary="project import">
       <created>1616063601544</created>
@@ -158,7 +158,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616068298511</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="stop session on session service">
+      <created>1622288219147</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1622288219147</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -183,7 +190,8 @@
     <MESSAGE value="project import" />
     <MESSAGE value="implement recording stop" />
     <MESSAGE value="integration" />
-    <option name="LAST_COMMIT_MESSAGE" value="integration" />
+    <MESSAGE value="stop session on session service" />
+    <option name="LAST_COMMIT_MESSAGE" value="stop session on session service" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

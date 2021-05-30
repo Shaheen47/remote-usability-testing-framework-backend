@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using screensharing_service.Contracts.Services;
@@ -7,10 +9,12 @@ namespace screensharing_service.Hubs
     public class ScreenMirroringReplyControllingHub:Hub
     {
         private IScreenEventsReplyService replyService;
+        private ConcurrentDictionary<string, IList<string>> activeSessions;
         
         public ScreenMirroringReplyControllingHub(IScreenEventsReplyService replyService)
         {
             this.replyService = replyService;
+            activeSessions = new ConcurrentDictionary<string, IList<string>>();
         }
         
         

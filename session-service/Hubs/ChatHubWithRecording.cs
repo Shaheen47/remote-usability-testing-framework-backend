@@ -52,7 +52,7 @@ namespace session_service.Hubs
             chatService.addMessage(chatSessionId,chatMessage);
         }
 
-        public bool deleteSession(string chatSessionId)
+        public bool closeSession(string chatSessionId)
         {
             if (activeSessions.ContainsKey(chatSessionId))
                 return false;

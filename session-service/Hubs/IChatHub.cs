@@ -13,6 +13,6 @@ namespace session_service.Hubs
 
         public Task sendMessage(string chatSessionId, string senderName, string message);
 
-        public bool deleteSession(string chatSessionId);
+        public bool closeSession(string chatSessionId);
     }
 }

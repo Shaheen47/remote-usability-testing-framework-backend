@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using screensharing_service.Contracts.Services;
@@ -8,10 +10,39 @@ namespace screensharing_service.Hubs
     public class ScreenMirroringHubWithRecording: Hub,IScreenMirroringHub
     {
         private IScreenEventsRecordingService screenEventsRecordingService;
+        private ConcurrentDictionary<string, IList<string>> activeSessions;
 
         public ScreenMirroringHubWithRecording(IScreenEventsRecordingService screenEventsRecordingService)
         {
             this.screenEventsRecordingService = screenEventsRecordingService;
+            activeSessions = new ConcurrentDictionary<string, IList<string>>();
+        }
+
+        public bool createSession(string sessionId)
+        {
+            if (activeSessions.ContainsKey(sessionId))
+                return false;
+            else
+            {
+                activeSessions.TryAdd(sessionId, new List<string>());
+                return true;
+            }
+        }
+
+        public bool closeSession(string sessionId)
+        {
+            if (activeSessions.ContainsKey(sessionId))
+                return false;
+            else
+            {
+                activeSessions.TryRemove(sessionId, out var sessionConnections);
+                foreach (string connection in sessionConnections)
+                {
+                    Groups.RemoveFromGroupAsync(connection, sessionId);
+                }
+
+                return true;
+            }
         }
 
         public async Task joinSessionAsSubscriber(string sessionId)

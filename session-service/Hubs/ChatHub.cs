@@ -37,6 +37,7 @@ namespace session_service.Hubs
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatSessionId);
             await Clients.Group(chatSessionId).SendAsync("userLeft", $"{Context.ConnectionId} has left the group {chatSessionId}.");
+            activeSessions[chatSessionId].Remove(Context.ConnectionId);
         }
 
         public async Task sendMessage(string chatSessionId, string senderName, string message)
@@ -44,7 +45,7 @@ namespace session_service.Hubs
             await Clients.Group(chatSessionId).SendAsync("messageSent", senderName, message);
         }
 
-        public bool deleteSession(string chatSessionId)
+        public bool closeSession(string chatSessionId)
         {
             if (activeSessions.ContainsKey(chatSessionId))
                 return false;
