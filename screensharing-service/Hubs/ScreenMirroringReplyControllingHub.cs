@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,18 +10,17 @@ namespace screensharing_service.Hubs
     public class ScreenMirroringReplyControllingHub:Hub
     {
         private IScreenEventsReplyService replyService;
-        private ConcurrentDictionary<string, IList<string>> activeSessions;
-        
+
         public ScreenMirroringReplyControllingHub(IScreenEventsReplyService replyService)
         {
             this.replyService = replyService;
-            activeSessions = new ConcurrentDictionary<string, IList<string>>();
         }
         
         
         public async Task  startReply(string sessionId)
         {
              replyService.startSessionReply(sessionId);
+             Console.WriteLine("startReply started");
              await Clients.All.SendAsync("test", "startReply done");
         }
 

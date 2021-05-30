@@ -10,12 +10,10 @@ namespace screensharing_service.Hubs
     public class ScreenMirroringHubWithRecording: Hub,IScreenMirroringHub
     {
         private IScreenEventsRecordingService screenEventsRecordingService;
-        private ConcurrentDictionary<string, IList<string>> activeSessions;
 
         public ScreenMirroringHubWithRecording(IScreenEventsRecordingService screenEventsRecordingService)
         {
             this.screenEventsRecordingService = screenEventsRecordingService;
-            activeSessions = new ConcurrentDictionary<string, IList<string>>();
         }
         
 
