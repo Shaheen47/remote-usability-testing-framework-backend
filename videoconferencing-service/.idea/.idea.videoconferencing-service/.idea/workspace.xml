@@ -5,17 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88d57cba-8c11-411a-93a2-75abcc95da1a" name="Default Changelist" comment="stop session on session service">
-      <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../session-service/Hubs/ChatHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Hubs/ChatHub.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../session-service/Hubs/ChatHubWithRecording.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Hubs/ChatHubWithRecording.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../session-service/Hubs/IChatHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Hubs/IChatHub.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../session-service/Proxies/screensharing-service/ScreensharingServiceProxy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Proxies/screensharing-service/ScreensharingServiceProxy.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../session-service/Proxies/videoconferencing-service/VideoConferencingServiceProxy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Proxies/videoconferencing-service/VideoConferencingServiceProxy.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../session-service/Services/ChatService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Services/ChatService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../session-service/Services/SessionService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../session-service/Services/SessionService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../screensharing-service/Hubs/IScreenMirroringHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../screensharing-service/Hubs/IScreenMirroringHub.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../screensharing-service/Hubs/ScreenMirroringHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../screensharing-service/Hubs/ScreenMirroringHub.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../screensharing-service/Hubs/ScreenMirroringHubWithRecording.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../screensharing-service/Hubs/ScreenMirroringHubWithRecording.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.videoconferencing-service/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.videoconferencing-service/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/appsettings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -17,32 +17,11 @@ namespace screensharing_service.Hubs
             this.screenEventsRecordingService = screenEventsRecordingService;
             activeSessions = new ConcurrentDictionary<string, IList<string>>();
         }
+        
 
-        public bool createSession(string sessionId)
+        public async Task closeSession(string sessionId)
         {
-            if (activeSessions.ContainsKey(sessionId))
-                return false;
-            else
-            {
-                activeSessions.TryAdd(sessionId, new List<string>());
-                return true;
-            }
-        }
-
-        public bool closeSession(string sessionId)
-        {
-            if (activeSessions.ContainsKey(sessionId))
-                return false;
-            else
-            {
-                activeSessions.TryRemove(sessionId, out var sessionConnections);
-                foreach (string connection in sessionConnections)
-                {
-                    Groups.RemoveFromGroupAsync(connection, sessionId);
-                }
-
-                return true;
-            }
+            await Clients.Group(sessionId).SendAsync("leaveSession");
         }
 
         public async Task joinSessionAsSubscriber(string sessionId)

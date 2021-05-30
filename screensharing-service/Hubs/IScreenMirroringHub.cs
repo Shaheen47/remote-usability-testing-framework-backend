@@ -4,8 +4,7 @@ namespace screensharing_service.Hubs
 {
     public interface IScreenMirroringHub
     {
-        public bool createSession(string sessionId);
-        public bool closeSession(string sessionId);
+        public Task closeSession(string sessionId);
         public Task joinSessionAsSubscriber(string sessionId);
 
         public Task joinSessionAsPublisher(string sessionId);
