@@ -13,6 +13,8 @@ namespace session_service.Services
         {
             this.chatRepository = chatRepository;
         }
+        
+        
 
         public  void addChat(Chat chat)
         {

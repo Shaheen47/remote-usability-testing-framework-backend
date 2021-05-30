@@ -13,8 +13,8 @@ namespace session_service.Proxies
     public class VideoConferencingServiceProxy : IVideoConferencingServiceProxy
     {
 
-        /*private string urlbase = "http://videoconferencing-service/";*/
-        private string urlbase = "https://localhost:5003/";
+        private string urlbase = "http://videoconferencing-service/";
+        /*private string urlbase = "https://localhost:5003/";*/
         public async Task<string> createSession()
         {
             HttpClientHandler clientHandler = new HttpClientHandler();

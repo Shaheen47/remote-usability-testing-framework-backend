@@ -18,23 +18,20 @@ namespace session_service.Services
         private IChatRepository chatRepository;
         private IVideoConferencingServiceProxy conferencingServiceProxy;
         private IScreensharingServiceProxy screensharingServiceProxy;
-        private IHubContext<ChatHub> chatHubContext;
-        private IHubContext<ChatHubWithRecording> chatHubWithRecordingContext;
+  
         private readonly IMapper Mapper;
 
         private const string chatHubBaseUrl = "https://localhost:5001/";
         /*private const string chatHubBaseUrl = "https://18.185.136.179/";*/
 
         public SessionService(ISessionRepository sessionRepository, IChatRepository chatRepository, IVideoConferencingServiceProxy conferencingServiceProxy,
-            IScreensharingServiceProxy screensharingServiceProxy, IMapper Mapper,IHubContext<ChatHub> chatHubContext,IHubContext<ChatHubWithRecording> chatHubWithRecordingContext)
+            IScreensharingServiceProxy screensharingServiceProxy, IMapper Mapper)
         {
             this.sessionRepository = sessionRepository;
             this.chatRepository = chatRepository;
             this.conferencingServiceProxy = conferencingServiceProxy;
             this.screensharingServiceProxy = screensharingServiceProxy;
             this.Mapper = Mapper;
-            this.chatHubContext = chatHubContext;
-            this.chatHubWithRecordingContext = chatHubWithRecordingContext;
         }
 
         public async Task<SessionCreationResponseDto> createSession()
@@ -103,12 +100,6 @@ namespace session_service.Services
         public async Task stopSession(Session session)
         {
             
-            //stop chat
-            if(session.isRecorded) 
-                await chatHubWithRecordingContext.Clients.Group(session.chatSessionId).SendAsync("deleteSession",session.chatSessionId);
-            else
-                await chatHubContext.Clients.Group(session.chatSessionId).SendAsync("deleteSession",session.chatSessionId);
-
 
             //stop video recording and get the url
             if(session.isRecorded) 

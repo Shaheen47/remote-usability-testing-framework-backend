@@ -11,8 +11,8 @@ namespace session_service.Proxies
     public class ScreensharingServiceProxy: IScreensharingServiceProxy
     {
       
-        private string urlBase = "https://localhost:5005/";
-        /*private string urlBase = "http://screensharing-service/";*/
+        /*private string urlBase = "https://localhost:5005/";*/
+        private string urlBase = "http://screensharing-service/";
         
         public async Task<ScreensharingSession> createSession()
         {
