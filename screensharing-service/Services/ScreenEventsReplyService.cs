@@ -17,23 +17,23 @@ namespace screensharing_service.Services
         private IScreenMirroringRepository screenMirroringRepository;
         private IHubContext<ScreenMirroringHub> hubContext;
         private Dictionary<string, IEnumerable<ScreenMirroringEvent>> mirroringEventsDic;
-        private Dictionary<string, bool> isReplying;
+        private ConcurrentDictionary<string, bool> isReplying;
         // the running time
-        private Dictionary<string,Stopwatch>  stopwatch;
+        private ConcurrentDictionary<string,Stopwatch>  stopwatch;
         // all events occured before this time is already sent
-        private Dictionary<string, long> elapsedTime;
+        private ConcurrentDictionary<string, long> elapsedTime;
         // we need some sort of added time to deal with replyFromTimestamp
-        private Dictionary<string, long> addedTime;
+        private ConcurrentDictionary<string, long> addedTime;
         
         public ScreenEventsReplyService(IScreenMirroringRepository screenMirroringRepository,IHubContext<ScreenMirroringHub> hubContext)
         {
             this.screenMirroringRepository = screenMirroringRepository;
             this.hubContext =hubContext;
-            this.stopwatch = new Dictionary<string, Stopwatch>();
+            this.stopwatch = new ConcurrentDictionary<string, Stopwatch>();
             this.mirroringEventsDic = new Dictionary<string, IEnumerable<ScreenMirroringEvent>>();
-            this.isReplying = new Dictionary<string, bool>();
-            this.elapsedTime = new Dictionary<string, long>();
-            addedTime = new Dictionary<string, long>();
+            this.isReplying = new ConcurrentDictionary<string, bool>();
+            this.elapsedTime = new ConcurrentDictionary<string, long>();
+            addedTime = new ConcurrentDictionary<string, long>();
         }
 
         
@@ -80,21 +80,19 @@ namespace screensharing_service.Services
             var y = await screenMirroringRepository.getAllEvents(sessionId, EventType.inputChanged);
             var z = await screenMirroringRepository.getAllEventsStartingFrom(sessionId,10000);
             var zx = await screenMirroringRepository.getAllEventsStartingFrom(sessionId,13000);*/
-            /*isReplying[sessionId] = false;*/
-            isReplying.Add(sessionId, false);
-            /*elapsedTime[sessionId] = 0;*/
-            elapsedTime.Add(sessionId,0);
-            /*addedTime[sessionId] = 0;*/
-            addedTime.Add(sessionId,0);
-            /*mirroringEventsDic[sessionId] =
-                await screenMirroringRepository.getAllEvents(sessionId);*/
-            Console.WriteLine("Reading events"+stopwatch.Count);
+            isReplying[sessionId] = false;
+            /*isReplying.Add(sessionId, false);*/
+            elapsedTime[sessionId] = 0;
+            /*elapsedTime.Add(sessionId,0);*/
+            addedTime[sessionId] = 0;
+            /*addedTime.Add(sessionId,0);*/
+            mirroringEventsDic[sessionId] =
+                await screenMirroringRepository.getAllEvents(sessionId);
             var events=await screenMirroringRepository.getAllEvents(sessionId);
-            Console.WriteLine("events.Count"+events.Count());
-            mirroringEventsDic.Add(sessionId,events);
-            /*stopwatch[sessionId] = new Stopwatch();*/
-            stopwatch.Add(sessionId,new Stopwatch());
-            Console.WriteLine("stopwatch.Count"+stopwatch.Count);
+            /*mirroringEventsDic.Add(sessionId,events);*/
+            mirroringEventsDic[sessionId]=events;
+            stopwatch[sessionId] = new Stopwatch();
+            /*stopwatch.Add(sessionId,new Stopwatch());*/
 
         }
 
