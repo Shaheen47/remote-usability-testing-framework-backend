@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using session_service.Dtos;
 using session_service.Entities;
@@ -18,6 +19,8 @@ namespace session_service.Contracts.Services
         public Task<SessionObserverDto> joinAsObserver(string sessionId,string observerName);
         
         public Task<Session> getSession(string sessionId);
+        
+        public Task<IList<Session>> getAllRecordedSessions();
         
         
         public Task stopSession(Session session);

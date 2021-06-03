@@ -53,6 +53,14 @@ namespace session_service.Controllers
             var session =await sessionService.getSession(sessionId);
             return Ok(session);
         }
+        
+        [HttpGet]
+        public async Task<IActionResult> getSessions()
+        {
+            var sessions =await sessionService.getAllRecordedSessions();
+            
+            return Ok(sessions);
+        }
 
         
         

@@ -1,6 +1,9 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.VisualBasic;
 using session_service.Contracts.Proxies;
 using session_service.Contracts.Repositories;
 using session_service.Contracts.Services;
@@ -88,6 +91,7 @@ namespace session_service.Services
             
             // store 
             session=await sessionRepository.Create(session);
+            session.status = SessionStatus.CREATED;
             await sessionRepository.Save();
 
             //return 
@@ -96,7 +100,12 @@ namespace session_service.Services
             
         }
 
-        
+
+        public Task<IList<Session>> getAllRecordedSessions()
+        {
+            return sessionRepository.findAllRecordedSessions();
+        }
+
         public async Task stopSession(Session session)
         {
             
@@ -155,7 +164,7 @@ namespace session_service.Services
             
             // set session as started 
             session.status = SessionStatus.STARTED;
-            
+            session.sessionDate = DateTime.Now;
             //save
             await sessionRepository.Update(session);
             await sessionRepository.Save();
@@ -171,7 +180,6 @@ namespace session_service.Services
             //call conferencingServiceProxy to create conference connection for the observer
             var token=await conferencingServiceProxy.joinAsObserver(session.videoConferencingSessionId);
             
-            session.observersConferencingTokens.Add(token);
             
             await sessionRepository.Update(session);
             await sessionRepository.Save();

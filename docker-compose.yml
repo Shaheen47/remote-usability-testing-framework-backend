@@ -3,6 +3,9 @@ version: '3'
 services:
   session-service:
     image: session-service:latest
+    build:
+      context: ./session-service/
+      dockerfile: dockerfile
     container_name: session-service-app
     ports:
       - 5001:443
@@ -23,6 +26,9 @@ services:
   screensharing-service:
     image: screensharing-service:latest
     container_name: screensharing-service-app
+    build:
+      context: ./screensharing-service/
+      dockerfile: dockerfile
     ports:
       - 5005:443
       - 5004:80
@@ -38,6 +44,9 @@ services:
 
   videoconferencing-service:
     image: videoconferencing-service:latest
+    build:
+      context: ./videoconferencing-service/
+      dockerfile: dockerfile
     container_name: videoconferencing-service-app
     ports:
       - 5003:443
