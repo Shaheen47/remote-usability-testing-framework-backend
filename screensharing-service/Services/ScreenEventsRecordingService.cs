@@ -43,7 +43,7 @@ namespace screensharing_service.Services
             screenMirroringRepository.addEvent(domEvent,sessionId);
         }
 
-        public void addMousemovementEvent(int x, int y, string sessionId)
+        public void addMousemovementEvent(float x, float y, string sessionId)
         {
             MousePosition mousePosition = new MousePosition
             {
@@ -102,6 +102,16 @@ namespace screensharing_service.Services
                 content = inputContent
             };
             screenMirroringRepository.addEvent(inputChangedEvent,sessionId);
+        }
+
+        public void addUrlParameterChangedEvent(string sessionId, string queryString)
+        {
+            UrlParameterChangeEvent urlParameterChangeEvent = new UrlParameterChangeEvent()
+            {
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds,
+                queryString = queryString
+
+            };
         }
     }
 }
