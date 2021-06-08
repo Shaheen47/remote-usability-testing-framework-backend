@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using session_service.Contracts.Repositories;
 using session_service.Core;
@@ -17,6 +18,25 @@ namespace session_service.Repositories
         public DumbSessionRepo()
         {
             sessions = new List<Session>();
+            Session session1 = new Session();
+            session1.isRecorded = true;
+            session1.status = SessionStatus.FINISHED;
+            session1.id = "dsadad";
+            session1.sessionDate=DateTime.Now.ToLocalTime();
+            Session session2= new Session();
+            session2.isRecorded = true;
+            session2.status = SessionStatus.FINISHED;
+            session2.id = "fdsfsdf";
+            session2.sessionDate=DateTime.Now;
+            Session session3= new Session();
+            session3.isRecorded = false;
+            session3.status = SessionStatus.FINISHED;
+            session3.id = "dadaw";
+            session3.sessionDate=DateTime.Now;
+            sessions.Add(session1);     
+            sessions.Add(session2);     
+            sessions.Add(session3);     
+
         }
 
         public async Task<IList<Session>> FindAll()
@@ -55,6 +75,11 @@ namespace session_service.Repositories
         public async Task<bool> Delete(Session entity)
         {
             return true;
+        }
+
+        public async Task<IList<Session>> findAllRecordedSessions()
+        {
+            return sessions.Where(session => session.isRecorded  && session.status==SessionStatus.FINISHED).ToList();
         }
     }
 }

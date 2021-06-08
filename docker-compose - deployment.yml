@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  session-service:
+    image: session-service:latest
+    container_name: session-service-app
+    ports:
+      - 443:443
+      - 80:80
+
+    depends_on:
+      - screensharing-service
+      - videoconferencing-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=12345678
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/ubuntu/cert/rutf.pfx
+    volumes:
+      - /home/ubuntu/cert/rutf.pfx:/home/ubuntu/cert/rutf.pfx
+
+
+  screensharing-service:
+    image: screensharing-service:latest
+    container_name: screensharing-service-app
+    ports:
+      - 5005:443
+      - 5004:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=12345678
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/ubuntu/cert/rutf.pfx
+    volumes:
+      - /home/ubuntu/cert/rutf.pfx:/home/ubuntu/cert/rutf.pfx
+
+
+
+  videoconferencing-service:
+    image: videoconferencing-service:latest
+    container_name: videoconferencing-service-app
+    ports:
+      - 5003:443
+      - 5002:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=12345678
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/ubuntu/cert/rutf.pfx
+    volumes:
+      - /home/ubuntu/cert/rutf.pfx:/home/ubuntu/cert/rutf.pfx
+      

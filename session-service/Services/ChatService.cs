@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using session_service.Contracts;
 using session_service.Contracts.Repositories;
 using session_service.Contracts.Services;
 using session_service.Entities;
@@ -15,6 +13,8 @@ namespace session_service.Services
         {
             this.chatRepository = chatRepository;
         }
+        
+        
 
         public  void addChat(Chat chat)
         {

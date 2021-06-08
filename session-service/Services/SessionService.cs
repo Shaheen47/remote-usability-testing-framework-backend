@@ -1,11 +1,16 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.VisualBasic;
 using session_service.Contracts.Proxies;
 using session_service.Contracts.Repositories;
 using session_service.Contracts.Services;
 using session_service.Core.Exceptions;
 using session_service.Dtos;
 using session_service.Entities;
+using session_service.Hubs;
 using session_service.Proxies;
 
 namespace session_service.Services
@@ -16,10 +21,14 @@ namespace session_service.Services
         private IChatRepository chatRepository;
         private IVideoConferencingServiceProxy conferencingServiceProxy;
         private IScreensharingServiceProxy screensharingServiceProxy;
-        
+  
         private readonly IMapper Mapper;
 
-        public SessionService(ISessionRepository sessionRepository, IChatRepository chatRepository, IVideoConferencingServiceProxy conferencingServiceProxy,IScreensharingServiceProxy screensharingServiceProxy, IMapper Mapper)
+        private const string chatHubBaseUrl = "https://localhost:5001/";
+        /*private const string chatHubBaseUrl = "https://18.185.136.179/";*/
+
+        public SessionService(ISessionRepository sessionRepository, IChatRepository chatRepository, IVideoConferencingServiceProxy conferencingServiceProxy,
+            IScreensharingServiceProxy screensharingServiceProxy, IMapper Mapper)
         {
             this.sessionRepository = sessionRepository;
             this.chatRepository = chatRepository;
@@ -36,8 +45,8 @@ namespace session_service.Services
             //create chat session
             Chat chat=chatRepository.createChat(new Chat());
             session.chatSessionId = chat.id;
-            session.chatHubUrl = "https://localhost:5001/ChatHub";
-            
+            session.chatHubUrl =chatHubBaseUrl+ "ChatHub";
+
             //create videoconference session by communicating with the VideoConferencingService
             session.videoConferencingSessionId=await conferencingServiceProxy.createSession();
             
@@ -46,8 +55,12 @@ namespace session_service.Services
             session.screenSharingHubUrl = screensharingSession.hubUrl;
             session.screenSharingSessionId = screensharingSession.sessionId;
             
-            // store 
+            
+            
             session=await sessionRepository.Create(session);
+            // set status as created
+            session.status = SessionStatus.CREATED;
+            // store 
             await sessionRepository.Save();
 
             //return 
@@ -64,7 +77,7 @@ namespace session_service.Services
             //create chat session
             Chat chat=chatRepository.createChat(new Chat());
             session.chatSessionId = chat.id;
-            session.chatHubUrl = "https://localhost:5001/ChatHubWithRecording";
+            session.chatHubUrl = chatHubBaseUrl+"ChatHubWithRecording";
             
             //create videoconference session by communicating with the VideoConferencingService
             session.videoConferencingSessionId=await conferencingServiceProxy.createSession();
@@ -74,9 +87,11 @@ namespace session_service.Services
             session.screenSharingHubUrl = screensharingSession.hubUrl;
             session.screenSharingSessionId = screensharingSession.sessionId;
             session.screenSharingReplyHubUrl = screensharingSession.replyHubUrl;
+            session.screenSharingReplyControllingHubUrl = screensharingSession.replyControllingHubUrl;
             
             // store 
             session=await sessionRepository.Create(session);
+            session.status = SessionStatus.CREATED;
             await sessionRepository.Save();
 
             //return 
@@ -85,25 +100,32 @@ namespace session_service.Services
             
         }
 
-        
+
+        public Task<IList<Session>> getAllRecordedSessions()
+        {
+            return sessionRepository.findAllRecordedSessions();
+        }
+
         public async Task stopSession(Session session)
         {
             
-            //stop session and chat
-            
-            
-            
+
             //stop video recording and get the url
             if(session.isRecorded) 
                 session.videoRecordingUrl=await conferencingServiceProxy.stopRecording(session.videoConferencingSessionId);
 
             //stop video session
-            conferencingServiceProxy.stopSession(session.videoConferencingSessionId);
+            await conferencingServiceProxy.stopSession(session.videoConferencingSessionId);
             
             //stop screensharing session
-            screensharingServiceProxy.stopSession(session.screenSharingSessionId);
+            await screensharingServiceProxy.stopSession(session.screenSharingSessionId);
             
+            //stop session 
+            session.status = SessionStatus.FINISHED;
 
+            //save
+            await sessionRepository.Update(session);
+            await sessionRepository.Save();
             
         }
 
@@ -140,6 +162,9 @@ namespace session_service.Services
             if (session.isRecorded == true)
                 await conferencingServiceProxy.startRecording(session.videoConferencingSessionId);
             
+            // set session as started 
+            session.status = SessionStatus.STARTED;
+            session.sessionDate = DateTime.Now;
             //save
             await sessionRepository.Update(session);
             await sessionRepository.Save();
@@ -155,7 +180,6 @@ namespace session_service.Services
             //call conferencingServiceProxy to create conference connection for the observer
             var token=await conferencingServiceProxy.joinAsObserver(session.videoConferencingSessionId);
             
-            session.observersConferencingTokens.Add(token);
             
             await sessionRepository.Update(session);
             await sessionRepository.Save();
@@ -171,12 +195,7 @@ namespace session_service.Services
             return session;
         }
         
-
-        public string getRecordingUrl(Session session)
-        {
-            throw new System.NotImplementedException();
-        }
-
+        
         public void replyScreensharing(Session session)
         {
             screensharingServiceProxy.replySession(session.screenSharingSessionId);

@@ -13,13 +13,11 @@ namespace screensharing_service.Controllers
     public class SessionController: ControllerBase
     {
         private ISessionService sessionService;
-        private IScreenEventsReplyService screenEventsReplyService;
         private readonly IMapper Mapper;
 
-        public SessionController(ISessionService sessionService,IScreenEventsReplyService screenEventsReplyService,IMapper Mapper)
+        public SessionController(ISessionService sessionService,IMapper Mapper)
         {
             this.sessionService = sessionService;
-            this.screenEventsReplyService = screenEventsReplyService;
             this.Mapper = Mapper;
         }
 
@@ -48,18 +46,6 @@ namespace screensharing_service.Controllers
             return NoContent();
         }
         
-        
-        
-        [HttpPost]
-        [Route("reply-session")]
-        public async Task<IActionResult> replySession([FromBody] SessionLoginDto loginDto)
-        {
-            //check session
-            
-            //reply
-           screenEventsReplyService.startSessionReply(loginDto.sessionId);
-            return Ok("session");
-        }
         
     }
 }

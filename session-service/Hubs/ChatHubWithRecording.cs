@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using session_service.Contracts.Services;
@@ -15,10 +17,10 @@ namespace session_service.Hubs
             this.chatService = chatService;
         }
 
+        
         public async Task joinSession(string chatSessionId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, chatSessionId);
-            //
             await Clients.Group(chatSessionId).SendAsync("userJoined", $"{Context.ConnectionId} has joined the group {chatSessionId}.");
         }
         
@@ -35,6 +37,11 @@ namespace session_service.Hubs
             
             ChatMessage chatMessage = new ChatMessage(senderName,message,DateTime.Now);
             chatService.addMessage(chatSessionId,chatMessage);
+        }
+
+        public async Task closeSession(string chatSessionId)
+        {
+            await Clients.Group(chatSessionId).SendAsync("leaveSession");
         }
     }
 }

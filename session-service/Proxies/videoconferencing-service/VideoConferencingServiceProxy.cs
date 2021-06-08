@@ -12,13 +12,15 @@ namespace session_service.Proxies
 {
     public class VideoConferencingServiceProxy : IVideoConferencingServiceProxy
     {
+
+        private string urlbase = "http://videoconferencing-service/";
+        /*private string urlbase = "https://localhost:5003/";*/
         public async Task<string> createSession()
         {
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            /*String api ="http://videoconferencing-service:80/Session/create-session";*/
-            String api ="https://localhost:5003/Session/create-session";
+            String api =urlbase+"Session/create-session";
             StringContent content =
                 new StringContent(("{}"), Encoding.UTF8, "application/json");
             var response = await client.PostAsync( api, content);
@@ -32,7 +34,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            String api ="https://localhost:5003/Session/"+sessionId;
+            String api =urlbase+"Session/"+sessionId;
             var response = await client.DeleteAsync( api);
             var responeContent = await response.Content.ReadAsStringAsync();
         }
@@ -42,8 +44,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            /*String api ="http://videoconferencing-service:80/Session/join-session-moderator";*/
-            String api ="https://localhost:5003/Session/join-session-moderator";
+            String api =urlbase+"Session/join-session-moderator";
             ConferenceSession conferenceSession = new ConferenceSession();
             conferenceSession.sessionName = sessionId;
             StringContent content =
@@ -59,8 +60,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            /*String api ="http://videoconferencing-service:80/Session/join-session-participant";*/
-            String api ="https://localhost:5003/Session/join-session-participant";
+            String api =urlbase+"Session/join-session-participant";
             ConferenceSession conferenceSession = new ConferenceSession();
             conferenceSession.sessionName = sessionId;
             StringContent content =
@@ -76,8 +76,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            /*String api ="http://videoconferencing-service:80/Session/join-session-observer";*/
-            String api ="https://localhost:5003/Session/join-session-observer";
+            String api =urlbase+"Session/join-session-observer";
             ConferenceSession conferenceSession = new ConferenceSession();
             conferenceSession.sessionName = sessionId;
             StringContent content =
@@ -93,8 +92,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            /*String api ="http://videoconferencing-service:80/Session/join-session-observer";*/
-            String api ="https://localhost:5003/Recording/start-record";
+            String api =urlbase+"Recording/start-record";
             ConferenceSession conferenceSession = new ConferenceSession();
             conferenceSession.sessionName = sessionId;
             StringContent content =
@@ -108,8 +106,7 @@ namespace session_service.Proxies
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
-            /*String api ="http://videoconferencing-service:80/Session/join-session-observer";*/
-            String api ="https://localhost:5003/Recording/stop-record";
+            String api =urlbase+"Recording/stop-record";
             ConferenceSession conferenceSession = new ConferenceSession();
             conferenceSession.sessionName = sessionId;
             StringContent content =

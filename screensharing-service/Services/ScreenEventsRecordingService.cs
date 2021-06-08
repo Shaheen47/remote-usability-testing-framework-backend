@@ -23,7 +23,7 @@ namespace screensharing_service.Services
 
         public void startSession(string sessionId)
         {
-            screenMirroringRepository.addSession(sessionId);
+            screenMirroringRepository.CreateSession(sessionId);
             stopWatches.Add(sessionId,new Stopwatch());
             stopWatches[sessionId].Start();
         }
@@ -36,30 +36,82 @@ namespace screensharing_service.Services
 
         public void AddDomEvent(DomEventCreationDto domEventCreationDto, string sessionId)
         {
-            DomEvent domEvent = new DomEvent();
-            domEvent.id = "dsad";
-            domEvent.content = domEventCreationDto.content;
-            domEvent.timestamp = stopWatches[sessionId].ElapsedMilliseconds;
-            screenMirroringRepository.addDomEvent(domEvent,sessionId);
+            DomEvent domEvent = new DomEvent
+            {
+                content = domEventCreationDto.content, timestamp = stopWatches[sessionId].ElapsedMilliseconds
+            };
+            screenMirroringRepository.addEvent(domEvent,sessionId);
         }
 
-        public void addMousemovementEvent(int x, int y, string sessionId)
+        public void addMousemovementEvent(float x, float y, string sessionId)
         {
-            MousePosition mousePosition = new MousePosition();
-            mousePosition.id = "dsad";
-            mousePosition.left = x;
-            mousePosition.top = y;
-            mousePosition.timestamp = stopWatches[sessionId].ElapsedMilliseconds;
-            screenMirroringRepository.addMouseMovementEvent(mousePosition,sessionId);
+            MousePosition mousePosition = new MousePosition
+            {
+                left = x, top = y, timestamp = stopWatches[sessionId].ElapsedMilliseconds
+            };
+            screenMirroringRepository.addEvent(mousePosition,sessionId);
         }
 
         public void addScrollingEvent(int vertical, string sessionId)
         {
-            ScrollPosition scrollPosition = new ScrollPosition();
-            scrollPosition.id = "dsad";
-            scrollPosition.vertical = vertical;
-            scrollPosition.timestamp = stopWatches[sessionId].ElapsedMilliseconds;
-            screenMirroringRepository.addScrollingEvent(scrollPosition,sessionId);
+            ScrollPosition scrollPosition = new ScrollPosition
+            {
+                vertical = vertical, timestamp = stopWatches[sessionId].ElapsedMilliseconds
+            };
+            screenMirroringRepository.addEvent(scrollPosition,sessionId);
+        }
+
+        public void addMouseUpEvent(string sessionId)
+        {
+            MouseUpEvent mouseUpEvent = new MouseUpEvent {timestamp = stopWatches[sessionId].ElapsedMilliseconds};
+            screenMirroringRepository.addEvent(mouseUpEvent,sessionId);
+        }
+
+        public void addMouseDownEvent(string sessionId)
+        {
+            MouseDownEvent mouseDownEvent = new MouseDownEvent {timestamp = stopWatches[sessionId].ElapsedMilliseconds};
+            screenMirroringRepository.addEvent(mouseDownEvent,sessionId);
+        }
+
+        public void addMouseOverEvent(string sessionId, string elementXpath)
+        {
+            MouseOverEvent mouseOverEvent = new MouseOverEvent()
+            {
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds,
+                elementXpath = elementXpath
+            };
+            screenMirroringRepository.addEvent(mouseOverEvent,sessionId);
+        }
+
+        public void addMouseOutEvent(string sessionId, string elementXpath)
+        {
+            MouseOutEvent mouseOutEvent = new MouseOutEvent()
+            {
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds,
+                elementXpath = elementXpath
+            };
+            screenMirroringRepository.addEvent(mouseOutEvent,sessionId);
+        }
+
+        public void addInputChangedEvent(string sessionId, string elementXpath, string inputContent)
+        {
+            InputChangedEvent inputChangedEvent = new InputChangedEvent()
+            {
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds,
+                elementXpath = elementXpath,
+                content = inputContent
+            };
+            screenMirroringRepository.addEvent(inputChangedEvent,sessionId);
+        }
+
+        public void addUrlParameterChangedEvent(string sessionId, string queryString)
+        {
+            UrlParameterChangeEvent urlParameterChangeEvent = new UrlParameterChangeEvent()
+            {
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds,
+                queryString = queryString
+
+            };
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,8 +11,9 @@ using screensharing_service.Hubs;
 
 namespace screensharing_service.Services
 {
-    public class ScreenEventsReplyService: IScreenEventsReplyService
+    public class DumbScreenEventsReplyService:IScreenEventsReplyService
     {
+        
         private IScreenMirroringRepository screenMirroringRepository;
         private IHubContext<ScreenMirroringHub> hubContext;
         private Dictionary<string, IEnumerable<ScreenMirroringEvent>> mirroringEventsDic;
@@ -25,7 +25,8 @@ namespace screensharing_service.Services
         // we need some sort of added time to deal with replyFromTimestamp
         private ConcurrentDictionary<string, long> addedTime;
         
-        public ScreenEventsReplyService(IScreenMirroringRepository screenMirroringRepository,IHubContext<ScreenMirroringHub> hubContext)
+        
+        public DumbScreenEventsReplyService(IScreenMirroringRepository screenMirroringRepository,IHubContext<ScreenMirroringHub> hubContext)
         {
             this.screenMirroringRepository = screenMirroringRepository;
             this.hubContext =hubContext;
@@ -49,9 +50,9 @@ namespace screensharing_service.Services
                 foreach (ScreenMirroringEvent screenMirroringEvent in eventsToSend)
                 {
                     if (screenMirroringEvent.GetType() == typeof(DomEvent))
-                        hubContext.Clients.Group(sessionId).SendAsync("sentDom",((DomEvent)screenMirroringEvent).content);
+                          hubContext.Clients.Group(sessionId).SendAsync("sentDom",((DomEvent)screenMirroringEvent).content);
                     else if(screenMirroringEvent.GetType() == typeof(MousePosition))
-                        hubContext.Clients.Group(sessionId).SendAsync("sentMousePosition",((MousePosition)screenMirroringEvent).left,((MousePosition)screenMirroringEvent).top);
+                          hubContext.Clients.Group(sessionId).SendAsync("sentMousePosition",((MousePosition)screenMirroringEvent).left,((MousePosition)screenMirroringEvent).top);
                     else if (screenMirroringEvent.GetType() == typeof(MouseUpEvent))
                         hubContext.Clients.Group(sessionId).SendAsync("mouseUp");
                     else if (screenMirroringEvent.GetType() == typeof(MouseDownEvent))
@@ -63,7 +64,7 @@ namespace screensharing_service.Services
                     else if (screenMirroringEvent.GetType() == typeof(InputChangedEvent))
                         hubContext.Clients.Group(sessionId).SendAsync("inputChanged",((InputChangedEvent)screenMirroringEvent).elementXpath,((InputChangedEvent)screenMirroringEvent).content);
                     else
-                        hubContext.Clients.Group(sessionId).SendAsync("sentScroll",((ScrollPosition)screenMirroringEvent).vertical);
+                          hubContext.Clients.Group(sessionId).SendAsync("sentScroll",((ScrollPosition)screenMirroringEvent).vertical);
                 }
 
                 elapsedTime[sessionId] = elapsedMilliseconds;
@@ -75,24 +76,12 @@ namespace screensharing_service.Services
 
         public async Task startSessionReply(string sessionId)
         {
-            Console.WriteLine("stopwatch.Count"+stopwatch.Count);
-            /*var x = await screenMirroringRepository.getAllEvents(sessionId, EventType.dom);
-            var y = await screenMirroringRepository.getAllEvents(sessionId, EventType.inputChanged);
-            var z = await screenMirroringRepository.getAllEventsStartingFrom(sessionId,10000);
-            var zx = await screenMirroringRepository.getAllEventsStartingFrom(sessionId,13000);*/
             isReplying[sessionId] = false;
-            /*isReplying.Add(sessionId, false);*/
             elapsedTime[sessionId] = 0;
-            /*elapsedTime.Add(sessionId,0);*/
             addedTime[sessionId] = 0;
-            /*addedTime.Add(sessionId,0);*/
             mirroringEventsDic[sessionId] =
                 await screenMirroringRepository.getAllEvents(sessionId);
-            var events=await screenMirroringRepository.getAllEvents(sessionId);
-            /*mirroringEventsDic.Add(sessionId,events);*/
-            mirroringEventsDic[sessionId]=events;
             stopwatch[sessionId] = new Stopwatch();
-            /*stopwatch.Add(sessionId,new Stopwatch());*/
 
         }
 
@@ -144,5 +133,6 @@ namespace screensharing_service.Services
             stopwatch[sessionId].Stop();
             //more logic
         }
+    
     }
 }
