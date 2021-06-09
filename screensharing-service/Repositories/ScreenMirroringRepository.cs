@@ -56,8 +56,6 @@ namespace screensharing_service.Repositories
             {
                 case EventType.dom:
                     return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(DomEvent));
-                case EventType.scroll:
-                    return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(ScrollPosition));
                 case EventType.inputChanged:
                     return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(InputChangedEvent));
                 case EventType.mouseDown:

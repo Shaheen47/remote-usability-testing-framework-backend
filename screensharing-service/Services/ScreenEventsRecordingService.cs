@@ -42,24 +42,7 @@ namespace screensharing_service.Services
             };
             screenMirroringRepository.addEvent(domEvent,sessionId);
         }
-
-        public void addMousemovementEvent(float x, float y, string sessionId)
-        {
-            MousePosition mousePosition = new MousePosition
-            {
-                left = x, top = y, timestamp = stopWatches[sessionId].ElapsedMilliseconds
-            };
-            screenMirroringRepository.addEvent(mousePosition,sessionId);
-        }
-
-        public void addScrollingEvent(int vertical, string sessionId)
-        {
-            ScrollPosition scrollPosition = new ScrollPosition
-            {
-                vertical = vertical, timestamp = stopWatches[sessionId].ElapsedMilliseconds
-            };
-            screenMirroringRepository.addEvent(scrollPosition,sessionId);
-        }
+        
 
         public void addMouseUpEvent(string sessionId)
         {
@@ -103,15 +86,6 @@ namespace screensharing_service.Services
             };
             screenMirroringRepository.addEvent(inputChangedEvent,sessionId);
         }
-
-        public void addUrlParameterChangedEvent(string sessionId, string queryString)
-        {
-            UrlParameterChangeEvent urlParameterChangeEvent = new UrlParameterChangeEvent()
-            {
-                timestamp = stopWatches[sessionId].ElapsedMilliseconds,
-                queryString = queryString
-
-            };
-        }
+        
     }
 }

@@ -50,8 +50,6 @@ namespace screensharing_service.Services
                 {
                     if (screenMirroringEvent.GetType() == typeof(DomEvent))
                         hubContext.Clients.Group(sessionId).SendAsync("sentDom",((DomEvent)screenMirroringEvent).content);
-                    else if(screenMirroringEvent.GetType() == typeof(MousePosition))
-                        hubContext.Clients.Group(sessionId).SendAsync("sentMousePosition",((MousePosition)screenMirroringEvent).left,((MousePosition)screenMirroringEvent).top);
                     else if (screenMirroringEvent.GetType() == typeof(MouseUpEvent))
                         hubContext.Clients.Group(sessionId).SendAsync("mouseUp");
                     else if (screenMirroringEvent.GetType() == typeof(MouseDownEvent))
@@ -62,8 +60,6 @@ namespace screensharing_service.Services
                         hubContext.Clients.Group(sessionId).SendAsync("mouseOut",((MouseOutEvent)screenMirroringEvent).elementXpath);
                     else if (screenMirroringEvent.GetType() == typeof(InputChangedEvent))
                         hubContext.Clients.Group(sessionId).SendAsync("inputChanged",((InputChangedEvent)screenMirroringEvent).elementXpath,((InputChangedEvent)screenMirroringEvent).content);
-                    else
-                        hubContext.Clients.Group(sessionId).SendAsync("sentScroll",((ScrollPosition)screenMirroringEvent).vertical);
                 }
 
                 elapsedTime[sessionId] = elapsedMilliseconds;

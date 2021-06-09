@@ -38,16 +38,6 @@ namespace screensharing_service.Hubs
             await Clients.OthersInGroup(sessionId).SendAsync("sentDom", dom);
         }
         
-        
-        public async Task sendMousePosition(string sessionId,float x,float y)
-        {
-            await Clients.OthersInGroup(sessionId).SendAsync("sentMousePosition", x,y);
-        }
-        
-        public async Task sendScroll(string sessionId,int vertical)
-        {
-            await Clients.OthersInGroup(sessionId).SendAsync("sentScroll",vertical);
-        }
 
         public async Task mouseUp(string sessionId)
         {
@@ -68,11 +58,7 @@ namespace screensharing_service.Hubs
         {
             await Clients.OthersInGroup(sessionId).SendAsync("mouseOut",elementXpath);
         }
-
-        public async Task urlParameterChange(string sessionId, string queryString)
-        {
-            await Clients.OthersInGroup(sessionId).SendAsync("urlParameterChange",queryString);
-        }
+        
 
         public async Task inputChanged(string sessionId, string elementXpath, string inputContent)
         {

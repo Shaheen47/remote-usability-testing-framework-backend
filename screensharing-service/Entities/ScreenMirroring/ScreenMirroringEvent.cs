@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace screensharing_service.Entities.ScreenMirroring
 {
     [BsonDiscriminator(RootClass = true)]
-    [BsonKnownTypes(typeof(DomEvent),typeof(InputChangedEvent),typeof(ScrollPosition),typeof(MouseOverEvent),typeof(MouseOutEvent),typeof(MousePosition),typeof(MouseUpEvent),typeof(MouseDownEvent))]
+    [BsonKnownTypes(typeof(DomEvent),typeof(InputChangedEvent),typeof(MouseOverEvent),typeof(MouseOutEvent),typeof(MouseUpEvent),typeof(MouseDownEvent))]
     public class ScreenMirroringEvent
     {
         [BsonRepresentation(BsonType.Double)]
