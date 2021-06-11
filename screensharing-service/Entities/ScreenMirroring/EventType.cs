@@ -2,6 +2,6 @@ namespace screensharing_service.Entities.ScreenMirroring
 {
     public enum EventType
     {
-        dom,mouseUp,mouseDown,mouseOver,mouseOut,inputChanged
+        domInitilization,domChange,domClear,baseUrlChangedEvent,mouseUp,mouseDown,mouseOver,mouseOut,inputChanged
     }
 }

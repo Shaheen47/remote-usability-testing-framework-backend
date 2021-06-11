@@ -54,8 +54,14 @@ namespace screensharing_service.Repositories
             //ToDo return the required results immediatly from the database
             switch (eventType)
             {
-                case EventType.dom:
-                    return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(DomEvent));
+                case EventType.domInitilization:
+                    return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(DomInitializationEvent));
+                case EventType.domChange:
+                    return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(DomChangeEvent));
+                case EventType.domClear:
+                    return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(ClearDomEvent));
+                case EventType.baseUrlChangedEvent:
+                    return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(BaseUrlChangedEvent));
                 case EventType.inputChanged:
                     return session.FirstOrDefault().events.AsQueryable().Where(e=>e.GetType()==typeof(InputChangedEvent));
                 case EventType.mouseDown:

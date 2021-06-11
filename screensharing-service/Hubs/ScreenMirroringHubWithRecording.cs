@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using screensharing_service.Contracts.Services;
 using screensharing_service.Dtos;
+using screensharing_service.Entities.ScreenMirroring;
 
 namespace screensharing_service.Hubs
 {
@@ -44,13 +46,31 @@ namespace screensharing_service.Hubs
             await Clients.OthersInGroup(sessionId).SendAsync("Send", $"{Context.ConnectionId} has left the group {sessionId}.");
         }
 
-        public async Task sendDom(string sessionId,string dom)
+        public async Task sendDomInitialization(string sessionId, string initialDom)
         {
-            
-            await Clients.OthersInGroup(sessionId).SendAsync("sentDom", dom);
-            var domEventCreationDto = new DomEventCreationDto(dom);
-            screenEventsRecordingService.AddDomEvent(domEventCreationDto,sessionId);
+            await Clients.OthersInGroup(sessionId).SendAsync("domInitialization", initialDom);
+            await screenEventsRecordingService.AddDomInitializationEvent(sessionId,initialDom);
+            Console.WriteLine("adding initial dom to database");
         }
+
+        public async Task sendDomChanges(string sessionId, string domChanges)
+        {
+            await Clients.OthersInGroup(sessionId).SendAsync("domChanges", domChanges);
+            screenEventsRecordingService.AddDomChangeEvent(sessionId,domChanges);
+        }
+
+        public async Task sendClearDom(string sessionId)
+        {
+            await Clients.OthersInGroup(sessionId).SendAsync("clearDom");
+            screenEventsRecordingService.AddDomClearEvent(sessionId);
+        }
+
+        public async Task sendBaseUrlChanged(string sessionId, string url)
+        {
+            await Clients.OthersInGroup(sessionId).SendAsync("baseUrlChanged",url);
+            screenEventsRecordingService.AddBaseUrlChangedEvent(sessionId,url);
+        }
+
 
         public async Task mouseUp(string sessionId)
         {

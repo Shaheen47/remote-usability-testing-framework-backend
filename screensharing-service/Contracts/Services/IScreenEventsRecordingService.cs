@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using screensharing_service.Dtos;
 using screensharing_service.Entities;
 
@@ -8,7 +9,12 @@ namespace screensharing_service.Contracts.Services
 
         public void startSession(string sessionId);
         public void stopSession(string sessionId);
-        public void AddDomEvent(DomEventCreationDto domEventCreationDto,string sessionId);
+        public Task AddDomInitializationEvent(string sessionId,string content);
+        public void AddDomChangeEvent(string sessionId,string content);
+        
+        public void AddDomClearEvent(string sessionId);
+        
+        public void AddBaseUrlChangedEvent(string sessionId,string url);
         public void addMouseUpEvent(string sessionId);
         public void addMouseDownEvent(string sessionId);
         public void addMouseOverEvent(string sessionId,string elementXpath);

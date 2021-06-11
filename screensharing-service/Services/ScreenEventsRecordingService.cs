@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using screensharing_service.Contracts.Repositories;
 using screensharing_service.Contracts.Services;
 using screensharing_service.Dtos;
@@ -34,15 +35,47 @@ namespace screensharing_service.Services
             stopWatches.Remove(sessionId);
         }
 
-        public void AddDomEvent(DomEventCreationDto domEventCreationDto, string sessionId)
+        public async Task AddDomInitializationEvent(string sessionId, string content)
         {
-            DomEvent domEvent = new DomEvent
+            DomInitializationEvent domInitializationEvent = new DomInitializationEvent
             {
-                content = domEventCreationDto.content, timestamp = stopWatches[sessionId].ElapsedMilliseconds
+                content = content,
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds
             };
-            screenMirroringRepository.addEvent(domEvent,sessionId);
+            await screenMirroringRepository.addEvent(domInitializationEvent,sessionId);
+            //Console.WriteLine("Dom init added,it has bytes:"+System.Text.ASCIIEncoding.Unicode.GetByteCount(content));
         }
-        
+
+        public void AddDomChangeEvent(string sessionId, string content)
+        {
+            DomChangeEvent domChangeEvent = new DomChangeEvent
+            {
+                content = content,
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds
+            };
+            screenMirroringRepository.addEvent(domChangeEvent,sessionId);
+        }
+
+        public void AddDomClearEvent(string sessionId)
+        {
+            ClearDomEvent clearDomEvent = new ClearDomEvent
+            {
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds
+            };
+            
+            screenMirroringRepository.addEvent(clearDomEvent,sessionId);
+        }
+
+        public void AddBaseUrlChangedEvent(string sessionId, string url)
+        {
+            BaseUrlChangedEvent baseUrlChangedEvent = new BaseUrlChangedEvent
+            {
+                url = url,
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds
+            };
+            screenMirroringRepository.addEvent(baseUrlChangedEvent,sessionId);
+        }
+
 
         public void addMouseUpEvent(string sessionId)
         {

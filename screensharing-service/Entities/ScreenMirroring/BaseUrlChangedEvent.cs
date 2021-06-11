@@ -1,13 +1,11 @@
-using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace screensharing_service.Entities.ScreenMirroring
 {
-    public class DomEvent: ScreenMirroringEvent
+    public class BaseUrlChangedEvent : ScreenMirroringEvent
     {
         [BsonRepresentation(BsonType.String)]
-        public string content { get; set; }
-        
+        public string url { get; set; }
     }
 }

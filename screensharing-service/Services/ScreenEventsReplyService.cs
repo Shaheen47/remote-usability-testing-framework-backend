@@ -46,10 +46,19 @@ namespace screensharing_service.Services
                 var elapsedMilliseconds = stopwatch[sessionId].ElapsedMilliseconds + addedTime[sessionId];
                 var eventsToSend = mirroringEventsDic[sessionId].Where(x => (x.timestamp <= elapsedMilliseconds) && (x.timestamp > elapsedTime[sessionId]))
                     .OrderBy(p=>p.timestamp).ToList();
+     
+                Console.WriteLine("time:"+eventsToSend[0].timestamp);
+   
                 foreach (ScreenMirroringEvent screenMirroringEvent in eventsToSend)
                 {
-                    if (screenMirroringEvent.GetType() == typeof(DomEvent))
-                        hubContext.Clients.Group(sessionId).SendAsync("sentDom",((DomEvent)screenMirroringEvent).content);
+                    if (screenMirroringEvent.GetType() == typeof(DomInitializationEvent))
+                        hubContext.Clients.Group(sessionId).SendAsync("domInitialization",((DomInitializationEvent)screenMirroringEvent).content);
+                    else if (screenMirroringEvent.GetType() == typeof(DomChangeEvent))
+                        hubContext.Clients.Group(sessionId).SendAsync("domChanges",((DomChangeEvent)screenMirroringEvent).content);
+                    else if (screenMirroringEvent.GetType() == typeof(ClearDomEvent))
+                        hubContext.Clients.Group(sessionId).SendAsync("clearDom",((ClearDomEvent)screenMirroringEvent));
+                    else if (screenMirroringEvent.GetType() == typeof(BaseUrlChangedEvent))
+                        hubContext.Clients.Group(sessionId).SendAsync("baseUrlChanged",((BaseUrlChangedEvent)screenMirroringEvent).url);
                     else if (screenMirroringEvent.GetType() == typeof(MouseUpEvent))
                         hubContext.Clients.Group(sessionId).SendAsync("mouseUp");
                     else if (screenMirroringEvent.GetType() == typeof(MouseDownEvent))
@@ -86,6 +95,8 @@ namespace screensharing_service.Services
                 await screenMirroringRepository.getAllEvents(sessionId);
             var events=await screenMirroringRepository.getAllEvents(sessionId);
             /*mirroringEventsDic.Add(sessionId,events);*/
+            var x=await screenMirroringRepository.getAllEvents(sessionId, EventType.domInitilization);
+            Console.WriteLine("initizlia events from db=" +x.ToList().Count); ;
             mirroringEventsDic[sessionId]=events;
             stopwatch[sessionId] = new Stopwatch();
             /*stopwatch.Add(sessionId,new Stopwatch());*/
@@ -118,27 +129,12 @@ namespace screensharing_service.Services
             stopwatch[sessionId].Restart();
             elapsedTime[sessionId] = 0;
             
-            
-            // basic solution for now
-
-
-
-
-            //much better solution
-
-            // send just the latest mouse position and scroll position
-
-            // send clear page
-
-
-            // send all dom events from beginning or from the last initialize
         }
 
         public void stopSessionReply(string sessionId)
         {
             isReplying[sessionId] = false;
             stopwatch[sessionId].Stop();
-            //more logic
         }
     }
 }
