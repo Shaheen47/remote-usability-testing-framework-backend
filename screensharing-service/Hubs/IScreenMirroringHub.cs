@@ -10,15 +10,14 @@ namespace screensharing_service.Hubs
         public Task joinSessionAsPublisher(string sessionId);
 
         public Task leaveSession(string sessionId);
-        
-        
-        public Task sendDomInitialization(string sessionId, string initialDom);
+
+
+        public Task sendDomInitialization(string sessionId, string initialDom, string baseUrl);
         
         public Task sendDomChanges(string sessionId, string domChanges);
 
         public Task sendClearDom(string sessionId);
         
-        public Task sendBaseUrlChanged(string sessionId,string url);
 
         public Task mouseUp(string sessionId);
 

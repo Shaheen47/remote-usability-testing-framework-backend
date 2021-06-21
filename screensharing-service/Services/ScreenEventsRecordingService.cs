@@ -35,15 +35,16 @@ namespace screensharing_service.Services
             stopWatches.Remove(sessionId);
         }
 
-        public async Task AddDomInitializationEvent(string sessionId, string content)
+        public  void AddDomInitializationEvent(string sessionId, string content,string baseUrl)
         {
             DomInitializationEvent domInitializationEvent = new DomInitializationEvent
             {
                 content = content,
+                baseUrl = baseUrl,
                 timestamp = stopWatches[sessionId].ElapsedMilliseconds,
                 sessionId = sessionId
             };
-            await screenMirroringRepository.addEvent(domInitializationEvent);
+             screenMirroringRepository.addEvent(domInitializationEvent);
             //Console.WriteLine("Dom init added,it has bytes:"+System.Text.ASCIIEncoding.Unicode.GetByteCount(content));
         }
 
@@ -68,17 +69,7 @@ namespace screensharing_service.Services
             
             screenMirroringRepository.addEvent(clearDomEvent);
         }
-
-        public void AddBaseUrlChangedEvent(string sessionId, string url)
-        {
-            BaseUrlChangedEvent baseUrlChangedEvent = new BaseUrlChangedEvent
-            {
-                url = url,
-                timestamp = stopWatches[sessionId].ElapsedMilliseconds,
-                sessionId = sessionId
-            };
-            screenMirroringRepository.addEvent(baseUrlChangedEvent);
-        }
+        
 
 
         public void addMouseUpEvent(string sessionId)

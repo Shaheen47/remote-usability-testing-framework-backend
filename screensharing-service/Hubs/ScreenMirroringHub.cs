@@ -34,9 +34,10 @@ namespace screensharing_service.Hubs
         }
         
 
-        public async Task sendDomInitialization(string sessionId, string initialDom)
+
+        public async Task sendDomInitialization(string sessionId, string initialDom,string baseUrl)
         {
-            await Clients.OthersInGroup(sessionId).SendAsync("domInitialization", initialDom);
+            await Clients.OthersInGroup(sessionId).SendAsync("domInitialization", initialDom,baseUrl);
         }
 
         public async Task sendDomChanges(string sessionId, string domChanges)
@@ -47,12 +48,9 @@ namespace screensharing_service.Hubs
         public async Task sendClearDom(string sessionId)
         {
             await Clients.OthersInGroup(sessionId).SendAsync("clearDom");
+            
         }
-
-        public async Task sendBaseUrlChanged(string sessionId, string url)
-        {
-            await Clients.OthersInGroup(sessionId).SendAsync("baseUrlChanged",url);
-        }
+        
 
 
         public async Task mouseUp(string sessionId)

@@ -46,10 +46,10 @@ namespace screensharing_service.Hubs
             await Clients.OthersInGroup(sessionId).SendAsync("Send", $"{Context.ConnectionId} has left the group {sessionId}.");
         }
 
-        public async Task sendDomInitialization(string sessionId, string initialDom)
+        public async Task sendDomInitialization(string sessionId, string initialDom,string baseUrl)
         {
-            await Clients.OthersInGroup(sessionId).SendAsync("domInitialization", initialDom);
-            await screenEventsRecordingService.AddDomInitializationEvent(sessionId,initialDom);
+            await Clients.OthersInGroup(sessionId).SendAsync("domInitialization", initialDom,baseUrl);
+            screenEventsRecordingService.AddDomInitializationEvent(sessionId,initialDom,baseUrl);
             Console.WriteLine("adding initial dom to database");
         }
 
@@ -63,12 +63,6 @@ namespace screensharing_service.Hubs
         {
             await Clients.OthersInGroup(sessionId).SendAsync("clearDom");
             screenEventsRecordingService.AddDomClearEvent(sessionId);
-        }
-
-        public async Task sendBaseUrlChanged(string sessionId, string url)
-        {
-            await Clients.OthersInGroup(sessionId).SendAsync("baseUrlChanged",url);
-            screenEventsRecordingService.AddBaseUrlChangedEvent(sessionId,url);
         }
 
 

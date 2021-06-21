@@ -7,5 +7,8 @@ namespace screensharing_service.Entities.ScreenMirroring
     {
         [BsonRepresentation(BsonType.String)]
         public string content { get; set; }
+        
+        [BsonRepresentation(BsonType.String)]
+        public string baseUrl { get; set; }
     }
 }

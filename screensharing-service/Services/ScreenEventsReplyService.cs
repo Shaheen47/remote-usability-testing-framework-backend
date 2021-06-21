@@ -47,18 +47,20 @@ namespace screensharing_service.Services
                 var eventsToSend = mirroringEventsDic[sessionId].Where(x => (x.timestamp <= elapsedMilliseconds) && (x.timestamp > elapsedTime[sessionId]))
                     .OrderBy(p=>p.timestamp).ToList();
      
-                Console.WriteLine("time:"+eventsToSend[0].timestamp);
+                Console.WriteLine("events:"+mirroringEventsDic[sessionId].Count());
    
                 foreach (ScreenMirroringEvent screenMirroringEvent in eventsToSend)
                 {
                     if (screenMirroringEvent.GetType() == typeof(DomInitializationEvent))
                         hubContext.Clients.Group(sessionId).SendAsync("domInitialization",((DomInitializationEvent)screenMirroringEvent).content);
                     else if (screenMirroringEvent.GetType() == typeof(DomChangeEvent))
+                    {
                         hubContext.Clients.Group(sessionId).SendAsync("domChanges",((DomChangeEvent)screenMirroringEvent).content);
+                        Console.WriteLine("sending changes");
+                    }
+                       
                     else if (screenMirroringEvent.GetType() == typeof(ClearDomEvent))
                         hubContext.Clients.Group(sessionId).SendAsync("clearDom",((ClearDomEvent)screenMirroringEvent));
-                    else if (screenMirroringEvent.GetType() == typeof(BaseUrlChangedEvent))
-                        hubContext.Clients.Group(sessionId).SendAsync("baseUrlChanged",((BaseUrlChangedEvent)screenMirroringEvent).url);
                     else if (screenMirroringEvent.GetType() == typeof(MouseUpEvent))
                         hubContext.Clients.Group(sessionId).SendAsync("mouseUp");
                     else if (screenMirroringEvent.GetType() == typeof(MouseDownEvent))
@@ -120,7 +122,7 @@ namespace screensharing_service.Services
             isReplying[sessionId] = false;
             
             //send clear page
-            await hubContext.Clients.Group(sessionId).SendAsync("sentDom","{'clear':'clear'}");
+            await hubContext.Clients.Group(sessionId).SendAsync("clearDom");
             
             // deal with timers
             addedTime[sessionId] = timestamp;
