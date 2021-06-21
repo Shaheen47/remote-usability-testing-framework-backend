@@ -4,8 +4,8 @@ using screensharing_service.Entities.ScreenMirroring;
 
 namespace screensharing_service.Data
 {
-    public interface IScreenReplySessionContext
+    public interface IEventContext
     {
-        IMongoCollection<ScreenReplySession> sessions { get; }
+        IMongoCollection<ScreenMirroringEvent> events { get; }
     }
 }

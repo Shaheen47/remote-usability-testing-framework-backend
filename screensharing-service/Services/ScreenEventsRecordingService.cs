@@ -24,7 +24,7 @@ namespace screensharing_service.Services
 
         public void startSession(string sessionId)
         {
-            screenMirroringRepository.CreateSession(sessionId);
+            //screenMirroringRepository.CreateSession(sessionId);
             stopWatches.Add(sessionId,new Stopwatch());
             stopWatches[sessionId].Start();
         }
@@ -40,9 +40,10 @@ namespace screensharing_service.Services
             DomInitializationEvent domInitializationEvent = new DomInitializationEvent
             {
                 content = content,
-                timestamp = stopWatches[sessionId].ElapsedMilliseconds
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds,
+                sessionId = sessionId
             };
-            await screenMirroringRepository.addEvent(domInitializationEvent,sessionId);
+            await screenMirroringRepository.addEvent(domInitializationEvent);
             //Console.WriteLine("Dom init added,it has bytes:"+System.Text.ASCIIEncoding.Unicode.GetByteCount(content));
         }
 
@@ -51,19 +52,21 @@ namespace screensharing_service.Services
             DomChangeEvent domChangeEvent = new DomChangeEvent
             {
                 content = content,
-                timestamp = stopWatches[sessionId].ElapsedMilliseconds
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds,
+                sessionId = sessionId
             };
-            screenMirroringRepository.addEvent(domChangeEvent,sessionId);
+            screenMirroringRepository.addEvent(domChangeEvent);
         }
 
         public void AddDomClearEvent(string sessionId)
         {
             ClearDomEvent clearDomEvent = new ClearDomEvent
             {
-                timestamp = stopWatches[sessionId].ElapsedMilliseconds
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds,
+                sessionId = sessionId
             };
             
-            screenMirroringRepository.addEvent(clearDomEvent,sessionId);
+            screenMirroringRepository.addEvent(clearDomEvent);
         }
 
         public void AddBaseUrlChangedEvent(string sessionId, string url)
@@ -71,22 +74,31 @@ namespace screensharing_service.Services
             BaseUrlChangedEvent baseUrlChangedEvent = new BaseUrlChangedEvent
             {
                 url = url,
-                timestamp = stopWatches[sessionId].ElapsedMilliseconds
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds,
+                sessionId = sessionId
             };
-            screenMirroringRepository.addEvent(baseUrlChangedEvent,sessionId);
+            screenMirroringRepository.addEvent(baseUrlChangedEvent);
         }
 
 
         public void addMouseUpEvent(string sessionId)
         {
-            MouseUpEvent mouseUpEvent = new MouseUpEvent {timestamp = stopWatches[sessionId].ElapsedMilliseconds};
-            screenMirroringRepository.addEvent(mouseUpEvent,sessionId);
+            MouseUpEvent mouseUpEvent = new MouseUpEvent
+            {
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds,
+                sessionId = sessionId
+            };
+            screenMirroringRepository.addEvent(mouseUpEvent);
         }
 
         public void addMouseDownEvent(string sessionId)
         {
-            MouseDownEvent mouseDownEvent = new MouseDownEvent {timestamp = stopWatches[sessionId].ElapsedMilliseconds};
-            screenMirroringRepository.addEvent(mouseDownEvent,sessionId);
+            MouseDownEvent mouseDownEvent = new MouseDownEvent
+            {
+                timestamp = stopWatches[sessionId].ElapsedMilliseconds,
+                sessionId = sessionId
+            };
+            screenMirroringRepository.addEvent(mouseDownEvent);
         }
 
         public void addMouseOverEvent(string sessionId, string elementXpath)
@@ -94,9 +106,10 @@ namespace screensharing_service.Services
             MouseOverEvent mouseOverEvent = new MouseOverEvent()
             {
                 timestamp = stopWatches[sessionId].ElapsedMilliseconds,
-                elementXpath = elementXpath
+                elementXpath = elementXpath,
+                sessionId = sessionId
             };
-            screenMirroringRepository.addEvent(mouseOverEvent,sessionId);
+            screenMirroringRepository.addEvent(mouseOverEvent);
         }
 
         public void addMouseOutEvent(string sessionId, string elementXpath)
@@ -104,9 +117,10 @@ namespace screensharing_service.Services
             MouseOutEvent mouseOutEvent = new MouseOutEvent()
             {
                 timestamp = stopWatches[sessionId].ElapsedMilliseconds,
-                elementXpath = elementXpath
+                elementXpath = elementXpath,
+                sessionId = sessionId
             };
-            screenMirroringRepository.addEvent(mouseOutEvent,sessionId);
+            screenMirroringRepository.addEvent(mouseOutEvent);
         }
 
         public void addInputChangedEvent(string sessionId, string elementXpath, string inputContent)
@@ -115,9 +129,10 @@ namespace screensharing_service.Services
             {
                 timestamp = stopWatches[sessionId].ElapsedMilliseconds,
                 elementXpath = elementXpath,
-                content = inputContent
+                content = inputContent,
+                sessionId = sessionId
             };
-            screenMirroringRepository.addEvent(inputChangedEvent,sessionId);
+            screenMirroringRepository.addEvent(inputChangedEvent);
         }
         
     }

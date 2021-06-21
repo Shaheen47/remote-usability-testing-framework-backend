@@ -51,7 +51,7 @@ namespace screensharing_service
             
             services.AddSingleton<ISessionRepository, SessionRepository>();
 
-            services.AddSingleton<IScreenReplySessionContext, ScreenReplySessionContext>();
+            services.AddSingleton<IEventContext, EventContext>();
 
         }
 

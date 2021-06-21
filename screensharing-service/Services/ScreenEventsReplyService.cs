@@ -95,8 +95,6 @@ namespace screensharing_service.Services
                 await screenMirroringRepository.getAllEvents(sessionId);
             var events=await screenMirroringRepository.getAllEvents(sessionId);
             /*mirroringEventsDic.Add(sessionId,events);*/
-            var x=await screenMirroringRepository.getAllEvents(sessionId, EventType.domInitilization);
-            Console.WriteLine("initizlia events from db=" +x.ToList().Count); ;
             mirroringEventsDic[sessionId]=events;
             stopwatch[sessionId] = new Stopwatch();
             /*stopwatch.Add(sessionId,new Stopwatch());*/
